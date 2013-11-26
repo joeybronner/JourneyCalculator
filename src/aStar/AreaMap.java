@@ -28,38 +28,6 @@ public class AreaMap {
 
     private void createMap() {
         Node node;
-//             map = new ArrayList<ArrayList<Node>>();  
-//             
-//             
-//             map.add(new ArrayList<Node>());
-//             
-//	             node = new Node(1,1);
-//	             map.get(1).add(node);
-//	             
-//	             node = new Node(1,2);
-//	             map.get(1).add(node);
-//	             
-//	             node = new Node(1,3);
-//	             map.get(1).add(node);
-//	            
-//	             
-//	             node = new Node(2,5);
-//	             map.get(2).add(node);
-//	             
-//	    
-//	             
-//	             node = new Node(3,3);
-//	             map.get(3).add(node);
-//	             
-//	             node = new Node(3,7);
-//	             map.get(3).add(node);
-//	        
-//	       
-//
-//	             
-//	             node = new Node(6,7);
-//	             map.get(6).add(node);
-
 
         map = new ArrayList<ArrayList<Node>>();
         for (int x = 0; x < mapWith; x++) {
@@ -106,27 +74,6 @@ public class AreaMap {
         node = map.get(6).get(7);
         node.setWest(map.get(3).get(7));
 
-//                for ( int x = 0; x < mapWith-1; x++ ) {
-//                        for ( int y = 0; y < mapHeight-1; y++ ) {
-//                                Node node = map.get(x).get(y);
-//                                if (!(y==0))
-//                                        node.setNorth(map.get(x).get(y-1));
-//                                if (!(y==0) && !(x==mapWith))
-//                                        node.setNorthEast(map.get(x+1).get(y-1));
-//                                if (!(x==mapWith))
-//                                        node.setEast(map.get(x+1).get(y));
-//                                if (!(x==mapWith) && !(y==mapHeight))
-//                                        node.setSouthEast(map.get(x+1).get(y+1));
-//                                if (!(y==mapHeight))
-//                                        node.setSouth(map.get(x).get(y+1));
-//                                if (!(x==0) && !(y==mapHeight))
-//                                        node.setSouthWest(map.get(x-1).get(y+1));
-//                                if (!(x==0))
-//                                        node.setWest(map.get(x-1).get(y));
-//                                if (!(x==0) && !(y==0))
-//                                        node.setNorthWest(map.get(x-1).get(y-1));
-//                        }
-//                }
     }
 
 
