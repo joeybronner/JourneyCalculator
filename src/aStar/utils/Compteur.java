@@ -19,7 +19,7 @@ public class Compteur {
     }
 
 
-    // Dur�e en millisecondes
+    // Durée en millisecondes
     public long getDureeMilliSec() {
         long duree;
         if (compte) {
@@ -31,7 +31,7 @@ public class Compteur {
     }
 
 
-    // Dur�e en secondes
+    // Durée en secondes
     public long getDureeSec() {
         long duree;
         if (compte) {

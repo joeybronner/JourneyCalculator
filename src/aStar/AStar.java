@@ -119,7 +119,7 @@ public class AStar {
                 } else if (node.isGoal) {
                     System.out.print("g");
                 } else if (shortestPath.contains(node.getX(), node.getY())) {
-                    System.out.print("�");
+                    System.out.print("é");
                     tab_itineraire[ind_tab] = map.getNode(x, y).nom_station.toString();
                     ind_tab = ind_tab + 1;
                 } else {
@@ -136,16 +136,16 @@ public class AStar {
             System.out.print("-");
         }
 
-        System.out.println("\nItin�raire:");
+        System.out.println("\nItinéraire:");
 
-        System.out.println("D�part.");
+        System.out.println("Départ.");
 
         try {
             for (int test = 0; test < tab_itineraire.length - 1; test++) {
                 System.out.println(tab_itineraire[test].toString());
             }
         } catch (Exception ex) {
-            System.out.println("Arriv�e.");
+            System.out.println("Arrivée.");
         }
     }
 

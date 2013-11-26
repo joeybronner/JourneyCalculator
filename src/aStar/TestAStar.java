@@ -19,9 +19,9 @@ public class TestAStar {
      *
      * @param mapWith       Largeur de la carte
      * @param mapHeight     Hauteur de la carte
-     * @param obstacleMap   Rang�e de la pi�ce � d�placer
-     * @param startX        Point de d�part
-     * @param startY        Point de d�part
+     * @param obstacleMap   Rangée de la piéce é déplacer
+     * @param startX        Point de départ
+     * @param startY        Point de départ
      * @param goalX         Point de destination
      * @param goalY         Point de destination
      */

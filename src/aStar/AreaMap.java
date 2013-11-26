@@ -21,9 +21,9 @@ public class AreaMap {
         this.mapHeight = mapHeight;
 
         createMap();
-        log.ecrireConsole("\tCarte cr��e");
+        log.ecrireConsole("\tCarte créée");
         registerEdges();
-        log.ecrireConsole("\tStations ajout�es");
+        log.ecrireConsole("\tStations ajoutées");
     }
 
     private void createMap() {
