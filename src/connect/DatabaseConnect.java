@@ -16,18 +16,18 @@ public class DatabaseConnect
     String login;
     String passwd;
     public static final String DRIVER = "com.mysql.jdbc.Driver"; 
-    public static final String URL = "jdbc:mysql://amine-bou.fr/db_journeycalculator";
+    public static final String URL = "jdbc:mysql://109.190.180.29:3306/journey";
     
     
     public void Connexion()
     {     
-    	login="db_journeycalculator";
-    	passwd="sF9C4GpAJZGzQQVU";
+    	login="journey";
+    	passwd="calculator";
     
         try
         { 
             Class.forName(DRIVER);
-            con = DriverManager.getConnection(URL, login, passwd); 
+            con = DriverManager.getConnection(URL, login, passwd);
             sta = con.createStatement(); 
             System.out.println("-- Connexion ouverte --");
         } 
