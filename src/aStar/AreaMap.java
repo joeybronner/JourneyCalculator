@@ -22,9 +22,9 @@ public class AreaMap {
                 this.mapHeight = mapHeight;
                 
                 createMap();
-                log.ecrireConsole("\tCarte créée");
+                log.ecrireConsole("\tCarte crÃ©Ã©e");
                 registerEdges();
-                log.ecrireConsole("\tStations ajoutées");
+                log.ecrireConsole("\tStations ajoutÃ©es");
         }
         private void createMap()
         {
@@ -49,7 +49,7 @@ public class AreaMap {
         {        
         	
         	// Ici, va falloir, soit : 
-        	//     - Aller chercher dans la base de données
+        	//     - Aller chercher dans la base de donnÃ©es
         	//     - Ouvrir et lire les fichiers csv ou txt
         	
         	Station station;
@@ -116,7 +116,7 @@ public class AreaMap {
         	
         	
         	station = map.get(13).get(14);
-        	station.nomStat = "Barbès";
+        	station.nomStat = "BarbÃ©s";
         	station.nomLign = "Ligne 2";
         	//station.setNorth(map.get(1).get(1));
         	station.setNorthEast(map.get(16).get(13));
@@ -128,7 +128,7 @@ public class AreaMap {
         	station.setNorthWest(map.get(11).get(9));
         	
         	station = map.get(13).get(24);
-        	station.nomStat = "Trocadéro";
+        	station.nomStat = "TrocadÃ©ro";
         	station.nomLign = "Ligne 1";
         	//station.setNorth(map.get(1).get(1));
         	station.setNorthEast(map.get(19).get(22));
@@ -188,7 +188,7 @@ public class AreaMap {
         	//station.setNorthWest(map.get(1).get(1));
         	
         	station = map.get(21).get(9);
-        	station.nomStat = "Pyrénées";
+        	station.nomStat = "PyrÃ©nÃ©es";
         	station.nomLign = "Ligne 3";
         	station.setNorth(map.get(21).get(4));
         	//station.setNorthEast(map.get(1).get(1));
@@ -260,7 +260,7 @@ public class AreaMap {
         	station.setNorthWest(map.get(24).get(17));
         	
         	station = map.get(31).get(9);
-        	station.nomStat = "Place des Fêtes";
+        	station.nomStat = "Place des FÃ©tes";
         	station.nomLign = "Ligne 3";
         	//station.setNorth(map.get(1).get(1));
         	station.setNorthEast(map.get(34).get(6));
@@ -272,7 +272,7 @@ public class AreaMap {
         	//station.setNorthWest(map.get(1).get(1));
         	
         	station = map.get(32).get(21);
-        	station.nomStat = "Opéra";
+        	station.nomStat = "OpÃ©ra";
         	station.nomLign = "Ligne 2";
         	//station.setNorth(map.get(1).get(1));
         	//station.setNorthEast(map.get(1).get(1));

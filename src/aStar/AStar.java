@@ -95,21 +95,21 @@ public class AStar {
 
         public Path calcCoolestPath(int startX, int startY, int goalX, int goalY) {
 
-            // Station de dÈbut et de fin
+            // Station de d√©but et de fin
             map.setStartLocation(startX, startY);
             map.setGoalLocation(goalX, goalY);
             
-            // On initialise le point de dÈpart qui sera le ZERO
+            // On initialise le point de d√©part qui sera le ZERO
             map.getStartNode().setDistanceFromStart(0);
             
-            // On vide les diffÈrentes listes
+            // On vide les diff√©rentes listes
             cheminList.clear();
             rechercheList.clear();
             
-            // On crÈe la liste des point ‡ ouvrir
+            // On cr√©e la liste des point √© ouvrir
             rechercheList.add(map.getStartNode());
 
-            // Tant qu'il n'est pas arrivÈ jusqu'au point d'arrivÈe
+            // Tant qu'il n'est pas arriv√© jusqu'au point d'arriv√©e
 
             
             // -------------------------------
@@ -122,19 +122,19 @@ public class AStar {
                     //get the first Node from non-searched Node list, sorted by lowest distance from our goal as guessed by our heuristic
                     Station current = rechercheList.getFirst();
 
-                    // Si la station actuelle est la destination, alors on a terminÈ
+                    // Si la station actuelle est la destination, alors on a termin√©
                     if(current.getX() == map.getGoalLocationX() && current.getY() == map.getGoalLocationY())
                     {
-                    	// On renvoi simplement l'itinÈraire (dÈj‡ construit) dans l'ordre.
+                    	// On renvoi simplement l'itin√©raire (d√©j√© construit) dans l'ordre.
                     	return reconstructPath(current);
                     }
 
-                    // Au premier tour on supprimer le dÈpart pour l'ajouter ‡ closedList qui contient l'tineraire
+                    // Au premier tour on supprimer le d√©part pour l'ajouter √© closedList qui contient l'tineraire
                     rechercheList.remove(current);
                     cheminList.add(current);
 
 
-                    // RÈcupÈration de la liste des voisins pour le point actuel
+                    // R√©cup√©ration de la liste des voisins pour le point actuel
                     for(Station neighbor : current.getNeighborList())
                     {
                             boolean neighborIsBetter;
@@ -266,7 +266,7 @@ public class AStar {
                                 } else if (node.isDestination) {
                                         System.out.print("g");
                                 } else if (shortestPath.contains(node.getX(), node.getY())) {
-                                        System.out.print("§");
+                                        System.out.print("√©");
                                 } 
                         		  else {
                                         System.out.print(" ");
@@ -289,8 +289,8 @@ public class AStar {
         {
         	int nbChange = 0;
         	String nomOldLign = map.getStartNode().nomLign;
-        	System.out.println("\nNombre de stations traversÈes : " + shortestPath.getLength());
-            System.out.println("DÈpart    : " + map.getStartNode().nomStat + " (" +  map.getStartNode().nomLign + ")");
+        	System.out.println("\nNombre de stations travers√©es : " + shortestPath.getLength());
+            System.out.println("D√©part    : " + map.getStartNode().nomStat + " (" +  map.getStartNode().nomLign + ")");
             for (int i=0;i<shortestPath.getLength();i++)
             {
             	int numStat = i+1;
@@ -306,11 +306,11 @@ public class AStar {
             	
             	if (i != shortestPath.getLength()-1)
             	{
-            		System.out.println("ArrÍt n∞" + numStat + " : " + map.getNode(x, y).nomStat + " (" +  map.getNode(x, y).nomLign + ")");
+            		System.out.println("Arr√©t n√©" + numStat + " : " + map.getNode(x, y).nomStat + " (" +  map.getNode(x, y).nomLign + ")");
             	}
             	else
             	{
-            		System.out.println("ArrivÈe   : " + map.getNode(x, y).nomStat + " (" +  map.getNode(x, y).nomLign + ")");
+            		System.out.println("Arriv√©e   : " + map.getNode(x, y).nomStat + " (" +  map.getNode(x, y).nomLign + ")");
             	}
             		
             }

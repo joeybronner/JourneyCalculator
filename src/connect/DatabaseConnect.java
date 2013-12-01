@@ -47,7 +47,7 @@ public class DatabaseConnect
          try
          { 
 		     re=sta.executeQuery(query); 
-		     System.out.println("Trouv�."); 
+		     System.out.println("Trouvé.");
          } 
          catch (SQLException ex)
          { 
@@ -61,7 +61,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate(query); 
-		     System.out.println("Ajout�."); 
+		     System.out.println("Ajouté.");
     	} 
     	catch (SQLException ex)
     	{ 
@@ -74,7 +74,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate(query); 
-		     System.out.println("Modifi�."); 
+		     System.out.println("Modifié.");
     	} 
     	catch (SQLException ex)
     	{ 
@@ -87,7 +87,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate(query); 
-		     System.out.println("Supprim�.");      
+		     System.out.println("Supprimé.");
     	} 
     	catch (SQLException ex)
     	{ 
@@ -105,6 +105,6 @@ public class DatabaseConnect
     	{ 
     		 System.out.println("Echec de fermeture de la connexion."); 
     	} 
-    	System.out.println("-- Connexion ferm�e --");
+    	System.out.println("-- Connexion fermée --");
     } 
 } 
