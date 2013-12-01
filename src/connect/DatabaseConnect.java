@@ -16,13 +16,13 @@ public class DatabaseConnect
     String login;
     String passwd;
     public static final String DRIVER = "com.mysql.jdbc.Driver"; 
-    public static final String URL = "jdbc:mysql://localhost:3306/db_journeycalculator";
+    public static final String URL = "jdbc:mysql://amine-bou.fr/db_journeycalculator";
     
     
     public void Connexion()
     {     
-    	login="root";
-    	passwd="";
+    	login="db_journeycalculator";
+    	passwd="sF9C4GpAJZGzQQVU";
     
         try
         { 
@@ -47,7 +47,7 @@ public class DatabaseConnect
          try
          { 
 		     re=sta.executeQuery(query); 
-		     System.out.println("Trouvé."); 
+		     System.out.println("Trouvï¿½."); 
          } 
          catch (SQLException ex)
          { 
@@ -61,7 +61,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate(query); 
-		     System.out.println("Ajouté."); 
+		     System.out.println("Ajoutï¿½."); 
     	} 
     	catch (SQLException ex)
     	{ 
@@ -74,7 +74,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate(query); 
-		     System.out.println("Modifié."); 
+		     System.out.println("Modifiï¿½."); 
     	} 
     	catch (SQLException ex)
     	{ 
@@ -87,7 +87,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate(query); 
-		     System.out.println("Supprimé.");      
+		     System.out.println("Supprimï¿½.");      
     	} 
     	catch (SQLException ex)
     	{ 
@@ -105,6 +105,6 @@ public class DatabaseConnect
     	{ 
     		 System.out.println("Echec de fermeture de la connexion."); 
     	} 
-    	System.out.println("-- Connexion fermée --");
+    	System.out.println("-- Connexion fermï¿½e --");
     } 
 } 
