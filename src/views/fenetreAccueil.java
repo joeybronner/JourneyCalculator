@@ -11,19 +11,24 @@ import connect.DatabaseConnect;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Collection;
 
 public class fenetreAccueil extends JFrame {
 
+    static Console log = new Console();
+    static AStar pathFinder;
+    static Compteur chrono = new Compteur();
     /**
      * Variables
      *
      * @param mapWith       Largeur de la carte
      * @param mapHeight     Hauteur de la carte
-     * @param obstacleMap   Rang�e de la pi�ce � d�placer
-     * @param startX        Point de d�part
-     * @param startY        Point de d�part
+     * @param obstacleMap   Rangée de la piéce é déplacer
+     * @param startX        Point de départ
+     * @param startY        Point de départ
      * @param goalX         Point de destination
      * @param goalY         Point de destination
      */
@@ -45,11 +50,9 @@ public class fenetreAccueil extends JFrame {
         fenetreAccueil f = new fenetreAccueil();
 
         DatabaseConnect BDD = new DatabaseConnect();
-        Console log = new Console();
-        Compteur chrono = new Compteur();
         chrono.demarrer();
 
-        log.ecrireConsole("Ouverture de la connexion avec la base de donn�es...");
+        log.ecrireConsole("Ouverture de la connexion avec la base de données...");
         BDD.Connexion();
 
         log.ecrireConsole("Initialisation de la carte...");
@@ -59,12 +62,12 @@ public class fenetreAccueil extends JFrame {
         AStarHeuristic heuristic = new ClosestHeuristic();
 
         log.ecrireConsole("Initialisation de l'algorithme...");
-        AStar pathFinder = new AStar(map, heuristic);
+        pathFinder = new AStar(map, heuristic);
 
         log.ecrireConsole("Calcul du chemin le plus court...");
 
         while (typeItineraire != 1 && typeItineraire != 2) {
-            typeItineraire = log.poserQuestionOneTwo("Voulez-vous privil�gier :\n -Le distance ? (1)\n -Le nombre de changements ? (2)");
+            typeItineraire = log.poserQuestionOneTwo("Voulez-vous privilégier :\n -Le distance ? (1)\n -Le nombre de changements ? (2)");
             if (typeItineraire == 1) {
                 pathFinder.calcShortestPath(depaX, depaY, destX, destY);
             } else if (typeItineraire == 2) {
@@ -73,9 +76,9 @@ public class fenetreAccueil extends JFrame {
         }
 
         chrono.arreter();
-        log.ecrireConsole("Dur�e de calcul: " + chrono.getDureeMilliSec() + "ms");
+        log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
 
-        log.ecrireConsole("\nR�sultat:");
+        log.ecrireConsole("\nRésultat:");
         //pathFinder.printPath();
         pathFinder.printItineraire();
     }
@@ -92,22 +95,39 @@ public class fenetreAccueil extends JFrame {
         JPanel choix = new JPanel();
         JLabel l = new JLabel("Mode de transport");
         choix.add(l);
-        JCheckBox metro = new JCheckBox("Métro");
+        final JCheckBox metro = new JCheckBox("Métro");
         metro.setSelected(false);
 
-        JCheckBox tram = new JCheckBox("Tram");
+        final JCheckBox tram = new JCheckBox("Tram");
         tram.setSelected(false);
 
-        JCheckBox rer = new JCheckBox("RER");
+        final JCheckBox rer = new JCheckBox("RER");
         rer.setSelected(false);
 
-        JCheckBox all = new JCheckBox("All");
+        final JCheckBox all = new JCheckBox("All");
         all.setSelected(true);
         choix.add(metro);
         choix.add(rer);
         choix.add(tram);
         choix.add(all);
         chemin.add(choix, BorderLayout.NORTH);
+
+        JPanel comment = new JPanel();
+        final ButtonGroup group = new ButtonGroup();
+
+
+        final JRadioButton rapide = new JRadioButton("Plus rapide");
+        rapide.setSelected(false);
+        comment.add(rapide);
+
+        final JRadioButton changement = new JRadioButton("Moins de changements");
+        changement.setSelected(false);
+        comment.add(changement);
+
+        group.add(rapide);
+        group.add(changement);
+
+        chemin.add(comment, BorderLayout.SOUTH);
 
         JPanel depart = new JPanel();
         JPanel arrive = new JPanel();
@@ -121,14 +141,43 @@ public class fenetreAccueil extends JFrame {
 
             depart.add(listeDep);
             arrive.add(listeArr);
-            chemin.add(listeDep, BorderLayout.CENTER);
-            chemin.add(listeArr, BorderLayout.SOUTH);
+            chemin.add(listeDep, BorderLayout.EAST);
+            chemin.add(listeArr, BorderLayout.WEST);
 
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         add(chemin, BorderLayout.NORTH);
         JButton valider = new JButton("Valider");
+        valider.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (rapide.isSelected()) {
+                            pathFinder.calcShortestPath(depaX, depaY, destX, destY);
+                        }
+                        if (changement.isSelected()) {
+                            pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
+
+                        }
+                        chrono.arreter();
+                        log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
+
+                        log.ecrireConsole("\nRésultat:");
+                        //pathFinder.printPath();
+                        pathFinder.printItineraire();
+                       /* if (all.isSelected()) {
+                            System.out.println("all");
+                        } else {
+                            boolean metroB = metro.isSelected();
+                            boolean tramB = tram.isSelected();
+                            boolean rerB = rer.isSelected();
+
+                            System.out.println(metroB + " " + rerB + " " + tramB);
+                        }*/
+                    }
+                }
+        );
         add(valider, BorderLayout.SOUTH);
         pack();
         setVisible(true);
