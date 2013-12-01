@@ -1,37 +1,40 @@
 package views;
 
-import javax.swing.*;
-import connect.DatabaseConnect;
 import aStar.AStar;
 import aStar.AreaMap;
 import aStar.heuristics.AStarHeuristic;
 import aStar.heuristics.ClosestHeuristic;
 import aStar.utils.Compteur;
 import aStar.utils.Console;
+import aStar.utils.Scrapper;
+import connect.DatabaseConnect;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.Collection;
 
 public class fenetreAccueil extends JFrame {
 
-	/**
-	 * Variables
-	 * @param mapWith       Largeur de la carte
-	 * @param mapHeight     Hauteur de la carte
-	 * @param obstacleMap   Rangée de la pièce à déplacer
-	 * @param startX        Point de départ
-	 * @param startY        Point de départ
-	 * @param goalX         Point de destination
-	 * @param goalY         Point de destination
-	 */
-     private static int mapLarg = 50;
-     private static int mapHaut = 50;  
-     private static int depaX = 11;
-     private static int depaY = 4;
-     private static int destX = 21;
-     private static int destY = 17;
-     private static int typeItineraire = 99;
-     
+    /**
+     * Variables
+     *
+     * @param mapWith       Largeur de la carte
+     * @param mapHeight     Hauteur de la carte
+     * @param obstacleMap   Rangï¿½e de la piï¿½ce ï¿½ dï¿½placer
+     * @param startX        Point de dï¿½part
+     * @param startY        Point de dï¿½part
+     * @param goalX         Point de destination
+     * @param goalY         Point de destination
+     */
+    private static int mapLarg = 50;
+    private static int mapHaut = 50;
+    private static int depaX = 11;
+    private static int depaY = 4;
+    private static int destX = 21;
+    private static int destY = 17;
+    private static int typeItineraire = 99;
+
     public fenetreAccueil() {
         super();
 
@@ -40,43 +43,39 @@ public class fenetreAccueil extends JFrame {
 
     public static void main(String[] args) {
         fenetreAccueil f = new fenetreAccueil();
-        
-        DatabaseConnect BDD = new DatabaseConnect();      
+
+        DatabaseConnect BDD = new DatabaseConnect();
         Console log = new Console();
         Compteur chrono = new Compteur();
         chrono.demarrer();
-        
-        log.ecrireConsole("Ouverture de la connexion avec la base de données...");
+
+        log.ecrireConsole("Ouverture de la connexion avec la base de donnï¿½es...");
         BDD.Connexion();
-        
+
         log.ecrireConsole("Initialisation de la carte...");
         AreaMap map = new AreaMap(mapLarg, mapHaut);
-        
+
         log.ecrireConsole("Initialisation de l'heuristique...");
         AStarHeuristic heuristic = new ClosestHeuristic();
-        
+
         log.ecrireConsole("Initialisation de l'algorithme...");
         AStar pathFinder = new AStar(map, heuristic);
-        
+
         log.ecrireConsole("Calcul du chemin le plus court...");
-        
-        while (typeItineraire != 1 && typeItineraire != 2)
-        {
-        	typeItineraire = log.poserQuestionOneTwo("Voulez-vous privilégier :\n -Le distance ? (1)\n -Le nombre de changements ? (2)");
-        	if (typeItineraire == 1)
-        	{
-        		pathFinder.calcShortestPath(depaX, depaY, destX, destY);
-        	}
-        	else if (typeItineraire == 2)
-        	{
-        		pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
-        	}
+
+        while (typeItineraire != 1 && typeItineraire != 2) {
+            typeItineraire = log.poserQuestionOneTwo("Voulez-vous privilï¿½gier :\n -Le distance ? (1)\n -Le nombre de changements ? (2)");
+            if (typeItineraire == 1) {
+                pathFinder.calcShortestPath(depaX, depaY, destX, destY);
+            } else if (typeItineraire == 2) {
+                pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
+            }
         }
-        
+
         chrono.arreter();
-        log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
-        
-        log.ecrireConsole("\nRésultat:");
+        log.ecrireConsole("Durï¿½e de calcul: " + chrono.getDureeMilliSec() + "ms");
+
+        log.ecrireConsole("\nRï¿½sultat:");
         //pathFinder.printPath();
         pathFinder.printItineraire();
     }
@@ -87,7 +86,9 @@ public class fenetreAccueil extends JFrame {
         setLocationRelativeTo(null); //On centre la fenÃªtre sur l'Ã©cran
         setResizable(false); //On interdit la redimensionnement de la fenÃªtre
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit Ã  l'application de se fermer lors du clic sur la croix
-        setLayout(new GridLayout());
+        setLayout(new BorderLayout());
+        JPanel chemin = new JPanel();
+        chemin.setLayout(new BorderLayout());
         JPanel choix = new JPanel();
         JLabel l = new JLabel("Mode de transport");
         choix.add(l);
@@ -106,7 +107,30 @@ public class fenetreAccueil extends JFrame {
         choix.add(rer);
         choix.add(tram);
         choix.add(all);
-        add(choix);
+        chemin.add(choix, BorderLayout.NORTH);
+
+        JPanel depart = new JPanel();
+        JPanel arrive = new JPanel();
+
+        Scrapper s = new Scrapper();
+        try {
+            s.readStops();
+            Collection<Scrapper.Arret> a = s.getArrs().values();
+            JComboBox listeDep = new JComboBox(a.toArray());
+            JComboBox listeArr = new JComboBox(a.toArray());
+
+            depart.add(listeDep);
+            arrive.add(listeArr);
+            chemin.add(listeDep, BorderLayout.CENTER);
+            chemin.add(listeArr, BorderLayout.SOUTH);
+
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        add(chemin, BorderLayout.NORTH);
+        JButton valider = new JButton("Valider");
+        add(valider, BorderLayout.SOUTH);
+        pack();
         setVisible(true);
     }
 
