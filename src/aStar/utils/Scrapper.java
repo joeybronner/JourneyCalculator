@@ -36,7 +36,6 @@ public class Scrapper {
             arr = new Arret(array[0], array[3], array[5]);
             arrs.put(Integer.valueOf(array[0]), arr);
         }
-        System.out.println(arrs);
 
         // Coordonnees
         fis = new FileInputStream("res/coordonnes.csv");
@@ -61,7 +60,6 @@ public class Scrapper {
             if (lines.contains(li))
                 li = lines.get(lines.indexOf(li));
             Arret a = arrs.get(Integer.parseInt(array[0]));
-            System.out.println(li);
             li.arrets.add(a);
             lines.add(li);
         }
