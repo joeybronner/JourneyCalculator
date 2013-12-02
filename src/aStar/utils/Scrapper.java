@@ -29,14 +29,13 @@ public class Scrapper
     
     public static void MAJCoordonnees() throws IOException
     {
-    	
     	int compteur= 0;
     	DatabaseConnect BDD = new DatabaseConnect();
     	BDD.Connexion();
     	BDD.ViderTable("tb_coordonnees");
         fis = new FileInputStream("res/coordonnes.csv");
         br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-        System.out.println("Mise à jour de la table tb_coordonnees en cours... Veuillez patienter...");
+        System.out.println("Mise ï¿½ jour de la table tb_coordonnees en cours... Veuillez patienter...");
         while ((line = br.readLine()) != null)
         {
             String array[] = pattern.split(line, 0);
@@ -58,10 +57,11 @@ public class Scrapper
             }    
         compteur++;         
         }
-        System.out.println("Mise à jour terminée. " + compteur + "lignes ont été ajoutées.");
+        System.out.println("Mise ï¿½ jour terminï¿½e. " + compteur + "lignes ont ï¿½tï¿½ ajoutï¿½es.");
         BDD.Deconnexion();
     }
 
+    
     public static void readStops() throws IOException
     {
 

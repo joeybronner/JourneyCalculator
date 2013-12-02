@@ -97,7 +97,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 		barreMenu.setBackground(Color.white);
 		setJMenuBar(barreMenu);
 		// Differents choix de la barre de menu
-		maj = new JMenu("Mises � jour...");
+		maj = new JMenu("Mises a jour...");
 		barreMenu.add(maj);
 		
 		coord = new JMenuItem("Charger le fichier coordonnees.csv dans la BDD");
