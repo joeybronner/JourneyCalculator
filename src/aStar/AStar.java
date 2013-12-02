@@ -31,7 +31,8 @@ public class AStar {
                 rechercheList = new SortedNodeList();
                 }
 
-        public Path calcShortestPath(int startX, int startY, int goalX, int goalY) {
+        public Path calcShortestPath(int startX, int startY, int goalX, int goalY)
+        {
 
                 //mark start and goal node
                 map.setStartLocation(startX, startY);

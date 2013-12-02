@@ -7,9 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class Scrapper {
-    static Map<Integer, Arret> arrs = new HashMap<Integer, Arret>();
+import connect.DatabaseConnect;
+
+public class Scrapper
+{
+
+	static Map<Integer, Arret> arrs = new HashMap<Integer, Arret>();
     static ArrayList<Line> lines = new ArrayList<Line>();
+    static InputStream fis;
+    static BufferedReader br;
+    static String line;
+    static Pattern pattern = Pattern.compile(";");
 
     public static Map<Integer, Arret> getArrs() {
         return arrs;
@@ -18,12 +26,45 @@ public class Scrapper {
     public static ArrayList<Line> getLines() {
         return lines;
     }
+    
+    public static void MAJCoordonnees() throws IOException
+    {
+    	
+    	int compteur= 0;
+    	DatabaseConnect BDD = new DatabaseConnect();
+    	BDD.Connexion();
+    	BDD.ViderTable("tb_coordonnees");
+        fis = new FileInputStream("res/coordonnes.csv");
+        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+        System.out.println("Mise à jour de la table tb_coordonnees en cours... Veuillez patienter...");
+        while ((line = br.readLine()) != null)
+        {
+            String array[] = pattern.split(line, 0);
+            if (array.length == 3)
+            {
+                Arret a = arrs.get(Integer.parseInt(array[0]));
+                if (a != null) {
+                    a.x = Integer.parseInt(array[1]);
+                    a.y = Integer.parseInt(array[2]);
+                }
+                
+                try {
+                	BDD.Ajouter("INSERT INTO tb_coordonnees VALUES (" + a.id + "," + a.x + "," + a.y + ")");
+                }
+                catch (Exception err){
+                	// Erreur
+                }
+                
+            }    
+        compteur++;         
+        }
+        System.out.println("Mise à jour terminée. " + compteur + "lignes ont été ajoutées.");
+        BDD.Deconnexion();
+    }
 
-    public static void readStops() throws IOException {
-        InputStream fis;
-        BufferedReader br;
-        String line;
-        Pattern pattern = Pattern.compile(";");
+    public static void readStops() throws IOException
+    {
+
 
         // Stops
         fis = new FileInputStream("res/stops.csv");
@@ -35,20 +76,6 @@ public class Scrapper {
             String array[] = pattern.split(line, 0);
             arr = new Arret(array[0], array[3], array[5]);
             arrs.put(Integer.valueOf(array[0]), arr);
-        }
-
-        // Coordonnees
-        fis = new FileInputStream("res/coordonnes.csv");
-        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-        while ((line = br.readLine()) != null) {
-            String array[] = pattern.split(line, 0);
-            if (array.length == 3) {
-                Arret a = arrs.get(Integer.parseInt(array[0]));
-                if (a != null) {
-                    a.x = Integer.parseInt(array[1]);
-                    a.y = Integer.parseInt(array[2]);
-                }
-            }
         }
 
         // lines
@@ -101,7 +128,8 @@ public class Scrapper {
         }
 
         @Override
-        public int hashCode() {
+        public int hashCode()
+        {
             int result = nom.hashCode();
             result = 31 * result + type.hashCode();
             return result;

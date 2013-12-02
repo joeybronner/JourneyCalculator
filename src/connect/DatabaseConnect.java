@@ -47,7 +47,6 @@ public class DatabaseConnect
          try
          { 
 		     re=sta.executeQuery(query); 
-		     System.out.println("Trouvé.");
          } 
          catch (SQLException ex)
          { 
@@ -60,8 +59,7 @@ public class DatabaseConnect
     { 
     	try
     	{ 
-		     sta.executeUpdate(query); 
-		     System.out.println("Ajouté.");
+		     sta.executeUpdate(query);
     	} 
     	catch (SQLException ex)
     	{ 
@@ -82,12 +80,12 @@ public class DatabaseConnect
     	}    
     }   
     
-    public void Supprimer(String query)
+    public void ViderTable(String table)
     { 
     	try
     	{ 
-		     sta.executeUpdate(query); 
-		     System.out.println("Supprimé.");
+		     sta.executeUpdate("TRUNCATE TABLE " + table); 
+		     System.out.println("Table "+table+" vid�e");
     	} 
     	catch (SQLException ex)
     	{ 
@@ -100,11 +98,12 @@ public class DatabaseConnect
     	try
     	{ 
     		 re.close(); 
+    		 System.out.println("-- Connexion ferm�e --");
     	}
     	catch (SQLException e)
     	{ 
     		 System.out.println("Echec de fermeture de la connexion."); 
     	} 
-    	System.out.println("-- Connexion fermée --");
+    	
     } 
 } 

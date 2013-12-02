@@ -10,13 +10,14 @@ import aStar.utils.Scrapper;
 import connect.DatabaseConnect;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Collection;
 
-public class fenetreAccueil extends JFrame {
+public class fenetreAccueil extends JFrame implements ActionListener {
 
     static Console log = new Console();
     static AStar pathFinder;
@@ -39,6 +40,9 @@ public class fenetreAccueil extends JFrame {
     private static int destX = 21;
     private static int destY = 17;
     private static int typeItineraire = 99;
+    JMenuBar barreMenu;
+    JMenu maj;
+    JMenuItem coord;
 
     public fenetreAccueil() {
         super();
@@ -46,14 +50,11 @@ public class fenetreAccueil extends JFrame {
         build();//On initialise notre fenÃªtre
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+    	
         fenetreAccueil f = new fenetreAccueil();
 
-        DatabaseConnect BDD = new DatabaseConnect();
         chrono.demarrer();
-
-        log.ecrireConsole("Ouverture de la connexion avec la base de donnÃ©es...");
-        BDD.Connexion();
 
         log.ecrireConsole("Initialisation de la carte...");
         AreaMap map = new AreaMap(mapLarg, mapHaut);
@@ -90,6 +91,20 @@ public class fenetreAccueil extends JFrame {
         setResizable(false); //On interdit la redimensionnement de la fenÃªtre
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit Ã  l'application de se fermer lors du clic sur la croix
         setLayout(new BorderLayout());
+        
+		// ----------------------- MENU BAR --------------------
+        barreMenu = new JMenuBar();
+		barreMenu.setBackground(Color.white);
+		setJMenuBar(barreMenu);
+		// Differents choix de la barre de menu
+		maj = new JMenu("Mises à jour...");
+		barreMenu.add(maj);
+		
+		coord = new JMenuItem("Mettre à jour les coordonnées de la BDD");
+		coord.addActionListener(this);
+		maj.add(coord);
+		// -----------------------------------------------------
+		
         JPanel chemin = new JPanel();
         chemin.setLayout(new BorderLayout());
         JPanel choix = new JPanel();
@@ -182,5 +197,26 @@ public class fenetreAccueil extends JFrame {
         pack();
         setVisible(true);
     }
+    
+	public void actionPerformed(ActionEvent e)
+	{
+		
+		Object source=e.getSource();
+		
+		if (source==coord)
+		{
+			MAJCoordonneesBDD();
+		}
+
+		
+	}
+	
+	private void MAJCoordonneesBDD()
+	{
+        try{
+        Scrapper.MAJCoordonnees();
+        }
+        catch (Exception err){}
+	}
 
 }
