@@ -42,7 +42,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static int typeItineraire = 99;
     JMenuBar barreMenu;
     JMenu maj;
-    JMenuItem coord;
+    JMenuItem coord, lines, stops;
 
     public fenetreAccueil() {
         super();
@@ -97,12 +97,20 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 		barreMenu.setBackground(Color.white);
 		setJMenuBar(barreMenu);
 		// Differents choix de la barre de menu
-		maj = new JMenu("Mises à jour...");
+		maj = new JMenu("Mises ï¿½ jour...");
 		barreMenu.add(maj);
 		
-		coord = new JMenuItem("Mettre à jour les coordonnées de la BDD");
+		coord = new JMenuItem("Charger le fichier coordonnees.csv dans la BDD");
 		coord.addActionListener(this);
 		maj.add(coord);
+		
+		stops = new JMenuItem("Charger le fichier stops.csv dans la BDD");
+		stops.addActionListener(this);
+		maj.add(stops);
+		
+		lines = new JMenuItem("Charger le fichier lines.csv dans la BDD");
+		lines.addActionListener(this);
+		maj.add(lines);
 		// -----------------------------------------------------
 		
         JPanel chemin = new JPanel();
@@ -206,6 +214,14 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 		if (source==coord)
 		{
 			MAJCoordonneesBDD();
+		}
+		else if (source==stops)
+		{
+			System.out.println("A configurer.");
+		}
+		else if (source==lines)
+		{
+			System.out.println("A configurer.");
 		}
 
 		
