@@ -18,6 +18,7 @@ public class Scrapper
     static BufferedReader br;
     static String line;
     static Pattern pattern = Pattern.compile(";");
+    static int compteur;
 
     public static Map<Integer, Arret> getArrs() {
         return arrs;
@@ -29,43 +30,82 @@ public class Scrapper
     
     public static void MAJCoordonnees() throws IOException
     {
-    	int compteur= 0;
+    	compteur= 0;
     	DatabaseConnect BDD = new DatabaseConnect();
     	BDD.Connexion();
     	BDD.ViderTable("tb_coordonnees");
         fis = new FileInputStream("res/coordonnes.csv");
         br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-        System.out.println("Mise � jour de la table tb_coordonnees en cours... Veuillez patienter...");
+        System.out.println("Mise a jour de la table <tb_coordonnees> en cours...\nVeuillez patienter...");
         while ((line = br.readLine()) != null)
         {
             String array[] = pattern.split(line, 0);
             if (array.length == 3)
             {
-                Arret a = arrs.get(Integer.parseInt(array[0]));
-                if (a != null) {
-                    a.x = Integer.parseInt(array[1]);
-                    a.y = Integer.parseInt(array[2]);
-                }
-                
                 try {
-                	BDD.Ajouter("INSERT INTO tb_coordonnees VALUES (" + a.id + "," + a.x + "," + a.y + ")");
+                	BDD.Ajouter("INSERT INTO tb_coordonnees VALUES (" + array[0] + "," + array[1] + "," + array[2] + ")");
+                	compteur++;   
                 }
-                catch (Exception err){
-                	// Erreur
-                }
-                
+                catch (Exception err){} 
             }    
-        compteur++;         
+              
         }
-        System.out.println("Mise � jour termin�e. " + compteur + "lignes ont �t� ajout�es.");
+        System.out.println("Mise a jour terminee.\n" + compteur + " lignes ont ete ajoutees.");
         BDD.Deconnexion();
     }
 
+    public static void MAJStops() throws IOException
+    {
+    	compteur= 0;
+    	DatabaseConnect BDD = new DatabaseConnect();
+    	BDD.Connexion();
+    	BDD.ViderTable("tb_stops");
+        fis = new FileInputStream("res/stops.csv");
+        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+        System.out.println("Mise a jour de la table <tb_stops> en cours...\nVeuillez patienter...");
+        while ((line = br.readLine()) != null)
+        {
+            String array[] = pattern.split(line, 0);
+            if (array.length == 6)
+            {
+                try {
+                	BDD.Ajouter("INSERT INTO tb_stops VALUES (" + array[0] + "," + array[1] + "," + array[2] + ", '" + array[3].replace("'", "\\'") + "', '" + array[4].replace("'", "\\'") + "', '" + array[5] + "')");
+                	compteur++;  
+                }
+                catch (Exception err){} 
+            }         
+        }
+        System.out.println("Mise a jour terminee.\n" + compteur + " lignes ont ete ajoutees.");
+        BDD.Deconnexion();
+    }
+    
+    public static void MAJLines() throws IOException
+    {
+    	compteur= 0;
+    	DatabaseConnect BDD = new DatabaseConnect();
+    	BDD.Connexion();
+    	BDD.ViderTable("tb_lines");
+        fis = new FileInputStream("res/lines.csv");
+        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+        System.out.println("Mise a jour de la table <tb_lines> en cours...\nVeuillez patienter...");
+        while ((line = br.readLine()) != null)
+        {
+            String array[] = pattern.split(line, 0);
+            if (array.length == 5)
+            {
+                try {
+                	BDD.Ajouter("INSERT INTO tb_lines VALUES ('" + array[0] + "'," + array[1] + "," + array[2] + ", '" + array[3].replace("'", "\\'") + "', '" + array[4].replace("'", "\\'") + "')");
+                	compteur++;  
+                }
+                catch (Exception err){} 
+            }         
+        }
+        System.out.println("Mise a jour terminee.\n" + compteur + " lignes ont ete ajoutees.");
+        BDD.Deconnexion();
+    }
     
     public static void readStops() throws IOException
     {
-
-
         // Stops
         fis = new FileInputStream("res/stops.csv");
         br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
@@ -79,17 +119,17 @@ public class Scrapper
         }
 
         // lines
-        fis = new FileInputStream("res/lines.csv");
-        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-        while ((line = br.readLine()) != null) {
-            String array[] = pattern.split(line, 0);
-            li = new Line(array[1], array[2]);
-            if (lines.contains(li))
-                li = lines.get(lines.indexOf(li));
-            Arret a = arrs.get(Integer.parseInt(array[0]));
-            li.arrets.add(a);
-            lines.add(li);
-        }
+//        fis = new FileInputStream("res/lines.csv");
+//        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+//        while ((line = br.readLine()) != null) {
+//            String array[] = pattern.split(line, 0);
+//            li = new Line(array[1], array[2]);
+//            if (lines.contains(li))
+//                li = lines.get(lines.indexOf(li));
+//            Arret a = arrs.get(Integer.parseInt(array[0]));
+//            li.arrets.add(a);
+//            lines.add(li);
+//        }
 
         br.close();
     }
@@ -138,9 +178,9 @@ public class Scrapper
 
     public static class Arret {
         int id;
-        // virer lat long
+        float longit;
+        float latitu;
         String nom;
-        // Virer lieu
         String type;
         int x;
         int y;

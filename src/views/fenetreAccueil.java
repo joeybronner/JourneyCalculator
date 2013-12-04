@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class fenetreAccueil extends JFrame implements ActionListener {
 
@@ -40,9 +41,12 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static int destX = 21;
     private static int destY = 17;
     private static int typeItineraire = 99;
-    JMenuBar barreMenu;
-    JMenu maj;
-    JMenuItem coord, lines, stops;
+    private static JMenuBar barreMenu;
+    private static JMenu bdd, maj, infos;
+    private static JMenuItem coord, lines, stops, develop;
+    private static JPanel depart, arrive, chemin;
+    private static JComboBox listeDep, listeArr;
+    private static DatabaseConnect BDD;
 
     public fenetreAccueil() {
         super();
@@ -87,33 +91,50 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private void build() {
         setTitle("Itinéraire"); //On donne un titre à l'application
         setSize(320, 240); //On donne une taille à notre fenêtre
-        setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
         setResizable(false); //On interdit la redimensionnement de la fenêtre
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer lors du clic sur la croix
         setLayout(new BorderLayout());
-        
-		// ----------------------- MENU BAR --------------------
+
+    	
+		// ------------------------------- MENU BAR -------------------------------
+        // --- Barre principale
         barreMenu = new JMenuBar();
-		barreMenu.setBackground(Color.white);
+		barreMenu.setBackground(Color.LIGHT_GRAY);
 		setJMenuBar(barreMenu);
-		// Differents choix de la barre de menu
-		maj = new JMenu("Mises a jour...");
-		barreMenu.add(maj);
 		
-		coord = new JMenuItem("Charger le fichier coordonnees.csv dans la BDD");
+		// --- Menus
+		bdd = new JMenu("Base de données");
+		barreMenu.add(bdd);
+		
+		infos = new JMenu("A propos...");
+		barreMenu.add(infos);
+		
+		// --- Sous-menus
+		maj = new JMenu("Mise à jour");
+		bdd.add(maj);
+		
+		coord = new JMenuItem("coordonnees.csv...");
 		coord.addActionListener(this);
 		maj.add(coord);
 		
-		stops = new JMenuItem("Charger le fichier stops.csv dans la BDD");
+		stops = new JMenuItem("stops.csv...");
 		stops.addActionListener(this);
 		maj.add(stops);
 		
-		lines = new JMenuItem("Charger le fichier lines.csv dans la BDD");
+		lines = new JMenuItem("lines.csv...");
 		lines.addActionListener(this);
 		maj.add(lines);
-		// -----------------------------------------------------
 		
-        JPanel chemin = new JPanel();
+		develop = new JMenuItem("Développeurs");
+		develop.addActionListener(this);
+		develop.setEnabled(false); // A supprimer des que fonction developpee
+		infos.add(develop);
+		// -------------------------------------------------------------------------
+        
+		depart = new JPanel();
+        arrive = new JPanel();
+		
+        chemin = new JPanel();
         chemin.setLayout(new BorderLayout());
         JPanel choix = new JPanel();
         JLabel l = new JLabel("Mode de transport");
@@ -129,12 +150,46 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
         final JCheckBox all = new JCheckBox("All");
         all.setSelected(true);
+        
+        JButton refresh = new JButton("Rafraichir la liste des stations");
+        refresh.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                    	listeDep.setEnabled(true);
+                    	//listeDep.removeAllItems();
+                    	listeArr.setEnabled(true);
+                    	//listeArr.removeAllItems();
+                    	                  	
+                        
+                        if (all.isSelected()) {
+                        	System.out.println("Requete de chargement de tous les arrêts confondus");
+                        }
+                        
+                        if (tram.isSelected()) {
+                        	System.out.println("Requete de chargement de tous les arrêts de TRAM");
+                        }
+                        
+                        if (metro.isSelected()) {
+                        	System.out.println("Requete de chargement de tous les arrêts de METRO");
+                        }
+                        
+                        if (rer.isSelected()) {
+                        	System.out.println("Requete de chargement de tous les arrêts de RER");
+                        }
+                        
+                    }
+                }
+        );
+        
         choix.add(metro);
         choix.add(rer);
         choix.add(tram);
         choix.add(all);
+        choix.add(refresh, BorderLayout.NORTH);
         chemin.add(choix, BorderLayout.NORTH);
-
+        
+        
         JPanel comment = new JPanel();
         final ButtonGroup group = new ButtonGroup();
 
@@ -150,17 +205,14 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         group.add(rapide);
         group.add(changement);
 
-        chemin.add(comment, BorderLayout.SOUTH);
-
-        JPanel depart = new JPanel();
-        JPanel arrive = new JPanel();
-
         Scrapper s = new Scrapper();
         try {
             s.readStops();
             Collection<Scrapper.Arret> a = s.getArrs().values();
-            JComboBox listeDep = new JComboBox(a.toArray());
-            JComboBox listeArr = new JComboBox(a.toArray());
+            listeDep = new JComboBox(a.toArray());
+            listeArr = new JComboBox(a.toArray());
+            listeDep.setEnabled(false);
+            listeArr.setEnabled(false);
 
             depart.add(listeDep);
             arrive.add(listeArr);
@@ -171,6 +223,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         add(chemin, BorderLayout.NORTH);
+        
+        
         JButton valider = new JButton("Valider");
         valider.addActionListener(
                 new ActionListener() {
@@ -203,6 +257,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         );
         add(valider, BorderLayout.SOUTH);
         pack();
+        setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
         setVisible(true);
     }
     
@@ -217,11 +272,11 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 		}
 		else if (source==stops)
 		{
-			System.out.println("A configurer.");
+			MAJStopsBDD();
 		}
 		else if (source==lines)
 		{
-			System.out.println("A configurer.");
+			MAJLinesBDD();
 		}
 
 		
@@ -231,6 +286,22 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 	{
         try{
         Scrapper.MAJCoordonnees();
+        }
+        catch (Exception err){}
+	}
+	
+	private void MAJStopsBDD()
+	{
+        try{
+        Scrapper.MAJStops();
+        }
+        catch (Exception err){}
+	}
+	
+	private void MAJLinesBDD()
+	{
+        try{
+        Scrapper.MAJLines();
         }
         catch (Exception err){}
 	}

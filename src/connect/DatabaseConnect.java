@@ -85,7 +85,7 @@ public class DatabaseConnect
     	try
     	{ 
 		     sta.executeUpdate("TRUNCATE TABLE " + table); 
-		     System.out.println("Table "+table+" vidée");
+		     System.out.println("Table "+table+" videe");
     	} 
     	catch (SQLException ex)
     	{ 
@@ -98,7 +98,7 @@ public class DatabaseConnect
     	try
     	{ 
     		 re.close(); 
-    		 System.out.println("-- Connexion fermée --");
+    		 System.out.println("-- Connexion fermï¿½e --");
     	}
     	catch (SQLException e)
     	{ 
