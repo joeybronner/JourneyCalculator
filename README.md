@@ -3,7 +3,7 @@
 -----------------------
 
 ### Instructions
-See the sylabus @(doc/projet_al_algo_java.pdf)
+Sylabus @(doc/projet_al_algo_java.pdf)
 
 ### Notes
 

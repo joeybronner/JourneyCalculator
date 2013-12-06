@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -44,221 +45,166 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static JMenuBar barreMenu;
     private static JMenu bdd, maj, infos;
     private static JMenuItem coord, lines, stops, develop;
-    private static JPanel depart, arrive, chemin;
-    private static JComboBox listeDep, listeArr;
+    private static JPanel panelPreferences, panelItineraire, panelValider;
+    private static JComboBox comboBoxDepart, comboBoxArrivee;
+    private static JButton valider, refresh;
     private static DatabaseConnect BDD;
+    private static JRadioButton rapide, changement;
+    private static JCheckBox metro, tram, rer, all;
+    private static ButtonGroup groupBoutRadio; 
 
-    public fenetreAccueil() {
+    public fenetreAccueil()
+    {
         super();
-
-        build();//On initialise notre fenêtre
+        build();
     }
 
-    public static void main(String[] args) throws IOException {
-    	
-        fenetreAccueil f = new fenetreAccueil();
-
-        chrono.demarrer();
-
+    public static void main(String[] args) throws IOException
+    {     
+        // --- INITIALISATION --- //
         log.ecrireConsole("Initialisation de la carte...");
         AreaMap map = new AreaMap(mapLarg, mapHaut);
-
+        
         log.ecrireConsole("Initialisation de l'heuristique...");
         AStarHeuristic heuristic = new ClosestHeuristic();
 
         log.ecrireConsole("Initialisation de l'algorithme...");
         pathFinder = new AStar(map, heuristic);
+        // --- FIN INITIALISATION --- //
+        
+    	// --- AFFICHAGE FENETRE ACCUEIL --- //
+        fenetreAccueil f = new fenetreAccueil();
+        log.ecrireConsole("Pret.");
 
-        log.ecrireConsole("Calcul du chemin le plus court...");
-
-        while (typeItineraire != 1 && typeItineraire != 2) {
-            typeItineraire = log.poserQuestionOneTwo("Voulez-vous privilégier :\n -Le distance ? (1)\n -Le nombre de changements ? (2)");
-            if (typeItineraire == 1) {
-                pathFinder.calcShortestPath(depaX, depaY, destX, destY);
-            } else if (typeItineraire == 2) {
-                pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
-            }
-        }
-
-        chrono.arreter();
-        log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
-
-        log.ecrireConsole("\nRésultat:");
-        //pathFinder.printPath();
-        pathFinder.printItineraire();
     }
 
-    private void build() {
-        setTitle("Itinéraire"); //On donne un titre à l'application
-        setSize(320, 240); //On donne une taille à notre fenêtre
+    private void build()
+    {
+        setTitle("Metro Parisien"); //On donne un titre à l'application
+        setSize(1000, 500); //On donne une taille à notre fenêtre
         setResizable(false); //On interdit la redimensionnement de la fenêtre
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer lors du clic sur la croix
         setLayout(new BorderLayout());
 
-    	
-		// ------------------------------- MENU BAR -------------------------------
-        // --- Barre principale
-        barreMenu = new JMenuBar();
-		barreMenu.setBackground(Color.LIGHT_GRAY);
-		setJMenuBar(barreMenu);
-		
-		// --- Menus
-		bdd = new JMenu("Base de données");
-		barreMenu.add(bdd);
-		
-		infos = new JMenu("A propos...");
-		barreMenu.add(infos);
-		
-		// --- Sous-menus
-		maj = new JMenu("Mise à jour");
-		bdd.add(maj);
-		
-		coord = new JMenuItem("coordonnees.csv...");
-		coord.addActionListener(this);
-		maj.add(coord);
-		
-		stops = new JMenuItem("stops.csv...");
-		stops.addActionListener(this);
-		maj.add(stops);
-		
-		lines = new JMenuItem("lines.csv...");
-		lines.addActionListener(this);
-		maj.add(lines);
-		
-		develop = new JMenuItem("Développeurs");
-		develop.addActionListener(this);
-		develop.setEnabled(false); // A supprimer des que fonction developpee
-		infos.add(develop);
-		// -------------------------------------------------------------------------
+        // Barre de menu (haut de l'interface)
+        MenuBar();
         
-		depart = new JPanel();
-        arrive = new JPanel();
+        // ---------------- PANEL DU HAUT ---------------- //
 		
-        chemin = new JPanel();
-        chemin.setLayout(new BorderLayout());
+        panelPreferences = new JPanel();
+        panelPreferences.setBackground(new Color(238,220,130));
+        panelPreferences.setLayout(new BorderLayout());
+        
         JPanel choix = new JPanel();
-        JLabel l = new JLabel("Mode de transport");
-        choix.add(l);
-        final JCheckBox metro = new JCheckBox("Métro");
+        choix.setOpaque(false);
+        JLabel titreModeTransport = new JLabel("Mode de transport");
+        choix.add(titreModeTransport);
+        metro = new JCheckBox("Metro");
+        metro.setOpaque(false);
         metro.setSelected(false);
 
-        final JCheckBox tram = new JCheckBox("Tram");
+        tram = new JCheckBox("Tram");
+        tram.setOpaque(false);
         tram.setSelected(false);
 
-        final JCheckBox rer = new JCheckBox("RER");
+        rer = new JCheckBox("RER");
+        rer.setOpaque(false);
         rer.setSelected(false);
 
-        final JCheckBox all = new JCheckBox("All");
+        all = new JCheckBox("All");
+        all.setOpaque(false);
         all.setSelected(true);
         
-        JButton refresh = new JButton("Rafraichir la liste des stations");
-        refresh.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                    	listeDep.setEnabled(true);
-                    	//listeDep.removeAllItems();
-                    	listeArr.setEnabled(true);
-                    	//listeArr.removeAllItems();
-                    	                  	
-                        
-                        if (all.isSelected()) {
-                        	System.out.println("Requete de chargement de tous les arrêts confondus");
-                        }
-                        
-                        if (tram.isSelected()) {
-                        	System.out.println("Requete de chargement de tous les arrêts de TRAM");
-                        }
-                        
-                        if (metro.isSelected()) {
-                        	System.out.println("Requete de chargement de tous les arrêts de METRO");
-                        }
-                        
-                        if (rer.isSelected()) {
-                        	System.out.println("Requete de chargement de tous les arrêts de RER");
-                        }
-                        
-                    }
-                }
-        );
+
         
         choix.add(metro);
         choix.add(rer);
         choix.add(tram);
         choix.add(all);
-        choix.add(refresh, BorderLayout.NORTH);
-        chemin.add(choix, BorderLayout.NORTH);
         
         
-        JPanel comment = new JPanel();
-        final ButtonGroup group = new ButtonGroup();
+        // -------------------------------------- //
+        
+        JPanel choix2 = new JPanel();
+        choix2.setOpaque(false);
+        refresh = new JButton("Rafraichir la liste des stations");
+        refresh.addActionListener(this);
+        choix2.add(refresh);
+        
+        // -------------------------------------- //
+        
+    	comboBoxDepart = new JComboBox();
+    	comboBoxDepart.setOpaque(false);
+    	comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
+        comboBoxDepart.setEnabled(false);
+        
+        comboBoxArrivee = new JComboBox();
+        comboBoxArrivee.setOpaque(false);
+        comboBoxArrivee.addItem("Veuillez selectionner une station dans la liste");
+        comboBoxArrivee.setEnabled(false);
+     
+        
+        panelPreferences.add(comboBoxDepart, BorderLayout.EAST);
+        panelPreferences.add(comboBoxArrivee, BorderLayout.WEST);
+        
+        panelPreferences.setMaximumSize(choix2.getPreferredSize() );
+       
+        // -------------------------------------- //
+       
+        
+        JPanel choix3 = new JPanel();
+        choix3.setOpaque(false);
 
+        groupBoutRadio = new ButtonGroup();
 
-        final JRadioButton rapide = new JRadioButton("Plus rapide");
-        rapide.setSelected(false);
-        comment.add(rapide);
-
-        final JRadioButton changement = new JRadioButton("Moins de changements");
+        rapide = new JRadioButton("Plus rapide");
+        rapide.setOpaque(false);
+        rapide.setSelected(true);
+        
+        changement = new JRadioButton("Moins de changements");
+        changement.setOpaque(false);
         changement.setSelected(false);
-        comment.add(changement);
-
-        group.add(rapide);
-        group.add(changement);
-
-        Scrapper s = new Scrapper();
-        try {
-            s.readStops();
-            Collection<Scrapper.Arret> a = s.getArrs().values();
-            listeDep = new JComboBox(a.toArray());
-            listeArr = new JComboBox(a.toArray());
-            listeDep.setEnabled(false);
-            listeArr.setEnabled(false);
-
-            depart.add(listeDep);
-            arrive.add(listeArr);
-            chemin.add(listeDep, BorderLayout.EAST);
-            chemin.add(listeArr, BorderLayout.WEST);
-
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        add(chemin, BorderLayout.NORTH);
+        
+        groupBoutRadio.add(changement);
+        groupBoutRadio.add(rapide);
+        
+        choix3.add(rapide);
+        choix3.add(changement);
+        
+        panelPreferences.add(choix, BorderLayout.NORTH);
+        panelPreferences.add(choix2, BorderLayout.CENTER);
+        panelPreferences.add(choix3, BorderLayout.SOUTH);
         
         
-        JButton valider = new JButton("Valider");
-        valider.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (rapide.isSelected()) {
-                            pathFinder.calcShortestPath(depaX, depaY, destX, destY);
-                        }
-                        if (changement.isSelected()) {
-                            pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
+        // ---------------- PANEL DU CENTRE ---------------- //
+        
+        panelItineraire = new JPanel();
+        panelItineraire.setBackground(new Color(255,236,139));
+        panelItineraire.setLayout(new BorderLayout());
+        
+        String[] selections = { "Ici, le d�tail de l'itin�raire", "Ici, le d�tail de l'itin�raire", "Ici, le d�tail de l'itin�raire", "Ici, le d�tail de l'itin�raire" };
+        JList list = new JList(selections);
+        list.setSelectedIndex(1);
+        list.isDisplayable();
+        panelItineraire.add(new JScrollPane(list));
 
-                        }
-                        chrono.arreter();
-                        log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
+        
+        // ---------------- PANEL DU BAS ---------------- //        
 
-                        log.ecrireConsole("\nRésultat:");
-                        //pathFinder.printPath();
-                        pathFinder.printItineraire();
-                       /* if (all.isSelected()) {
-                            System.out.println("all");
-                        } else {
-                            boolean metroB = metro.isSelected();
-                            boolean tramB = tram.isSelected();
-                            boolean rerB = rer.isSelected();
+        panelValider = new JPanel();
+        panelValider.setBackground(new Color(238,220,130));
+        valider = new JButton("Calculer l'itin�raire");
+        valider.addActionListener(this);
+        panelValider.add(valider, BorderLayout.CENTER);
+        
+        
+        // Ajout des differents panels a la fenetre
+        add(panelPreferences, BorderLayout.NORTH);
+        add(panelItineraire, BorderLayout.CENTER);
+        add(panelValider, BorderLayout.SOUTH);
 
-                            System.out.println(metroB + " " + rerB + " " + tramB);
-                        }*/
-                    }
-                }
-        );
-        add(valider, BorderLayout.SOUTH);
-        pack();
-        setLocationRelativeTo(null); //On centre la fenêtre sur l'écran
-        setVisible(true);
+        setLocationRelativeTo(null); //On centre la fenêtre sur l'ecran
+        setVisible(true); // On affiche la fenetre a l'ecran
     }
     
 	public void actionPerformed(ActionEvent e)
@@ -278,6 +224,98 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 		{
 			MAJLinesBDD();
 		}
+		else if (source==valider)
+		{
+			chrono.demarrer();
+			
+	        if (rapide.isSelected()) {
+	        	pathFinder.calcShortestPath(depaX, depaY, destX, destY);
+	            chrono.arreter();
+	            log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
+
+	            log.ecrireConsole("\nRésultat:");
+	            pathFinder.printPath();
+	            pathFinder.printItineraire();
+	        }
+	        else if (changement.isSelected()) {
+	        	pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
+	            chrono.arreter();
+	            log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
+
+	            log.ecrireConsole("\nRésultat:");
+	            pathFinder.printPath();
+	            pathFinder.printItineraire();
+		    }
+		}
+		else if (source==refresh)
+		{
+        	comboBoxDepart.setEnabled(true);
+        	comboBoxArrivee.setEnabled(true);
+        	                  	
+            
+            if (all.isSelected()) {
+            	System.out.println("Requete de chargement de tous les arrets confondus");
+              Scrapper s = new Scrapper();
+                  try
+                  {
+                	  comboBoxDepart.removeAllItems();
+                      comboBoxArrivee.removeAllItems();
+                	  s.readStops("SELECT id_stop, name_stop, type_stop FROM tb_stops ORDER BY type_stop, name_stop");
+	                  Collection<Scrapper.Arret> a = s.getArrs().values();
+	                  Iterator it = a.iterator();
+	                  while (it.hasNext())
+	                  {
+	                    Object ar = it.next();
+	                    comboBoxDepart.addItem(ar.toString());
+	                    comboBoxArrivee.addItem(ar.toString());
+	                  }
+
+                  } catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+            }
+            
+            if (tram.isSelected() && !metro.isSelected() && !rer.isSelected() && !all.isSelected()) {
+            	System.out.println("Requete de chargement de tous les arrêts de TRAM");
+                Scrapper s = new Scrapper();
+                    try
+                    {
+                      comboBoxDepart.removeAllItems();
+                      comboBoxArrivee.removeAllItems();
+                  	  s.readStops("SELECT id_stop, name_stop, type_stop FROM tb_stops WHERE type_stop='tram' ORDER BY type_stop, name_stop");
+  	                  Collection<Scrapper.Arret> a = s.getArrs().values();
+  	                  Iterator it = a.iterator();
+  	                  while (it.hasNext())
+  	                  {
+  	                    Object ar = it.next();
+  	                    comboBoxDepart.addItem(ar.toString());
+  	                    comboBoxArrivee.addItem(ar.toString());
+  	                  }
+
+                    } catch (IOException e1) {
+  						// TODO Auto-generated catch block
+  						e1.printStackTrace();
+  				} catch (SQLException e1) {
+  					// TODO Auto-generated catch block
+  					e1.printStackTrace();
+  				}
+            }
+            
+            if (metro.isSelected()) {
+            	System.out.println("Requete de chargement de tous les arrêts de METRO");
+            }
+            
+            if (rer.isSelected()) {
+            	System.out.println("Requete de chargement de tous les arrêts de RER");
+            }
+		}
+		
+		
 
 		
 	}
@@ -306,4 +344,42 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         catch (Exception err){}
 	}
 
+	private void MenuBar()
+	{
+		// ------------------------------- MENU BAR -------------------------------
+        // --- Barre principale
+        barreMenu = new JMenuBar();
+		barreMenu.setBackground(new Color(205,190,112));
+		setJMenuBar(barreMenu);
+		
+		// --- Menus
+		bdd = new JMenu("Base de donnees");
+		barreMenu.add(bdd);
+		
+		infos = new JMenu("A propos...");
+		barreMenu.add(infos);
+		
+		// --- Sous-menus
+		maj = new JMenu("Mise a jour");
+		bdd.add(maj);
+		
+		coord = new JMenuItem("coordonnees.csv...");
+		coord.addActionListener(this);
+		maj.add(coord);
+		
+		stops = new JMenuItem("stops.csv...");
+		stops.addActionListener(this);
+		maj.add(stops);
+		
+		lines = new JMenuItem("lines.csv...");
+		lines.addActionListener(this);
+		maj.add(lines);
+		
+		develop = new JMenuItem("Developpeurs");
+		develop.addActionListener(this);
+		develop.setEnabled(false); // A supprimer des que fonction developpee
+		infos.add(develop);
+		// -------------------------------------------------------------------------
+	}
+	
 }

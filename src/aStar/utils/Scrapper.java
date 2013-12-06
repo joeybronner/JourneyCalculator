@@ -2,6 +2,8 @@ package aStar.utils;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,42 +106,30 @@ public class Scrapper
         BDD.Deconnexion();
     }
     
-    public static void readStops() throws IOException
+    public static void readStops(String requete) throws IOException, SQLException
     {
-        // Stops
-        fis = new FileInputStream("res/stops.csv");
-        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-
-        Arret arr;
-        Line li;
-        while ((line = br.readLine()) != null) {
-            String array[] = pattern.split(line, 0);
-            arr = new Arret(array[0], array[3], array[5]);
-            arrs.put(Integer.valueOf(array[0]), arr);
-        }
-
-        // lines
-//        fis = new FileInputStream("res/lines.csv");
-//        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-//        while ((line = br.readLine()) != null) {
-//            String array[] = pattern.split(line, 0);
-//            li = new Line(array[1], array[2]);
-//            if (lines.contains(li))
-//                li = lines.get(lines.indexOf(li));
-//            Arret a = arrs.get(Integer.parseInt(array[0]));
-//            li.arrets.add(a);
-//            lines.add(li);
-//        }
-
-        br.close();
+    	DatabaseConnect connexion = new DatabaseConnect();
+    	connexion.Connexion();
+    	Arret arr;
+    	arrs.clear();
+    	
+    	ResultSet test = connexion.Rechercher(requete);
+    	
+    	int i = 0;
+    	while (test.next())
+    	{              
+            arr = new Arret(test.getString("id_stop"), test.getString("name_stop"), test.getString("type_stop"));
+            arrs.put(Integer.valueOf(test.getString("id_stop")), arr);
+    	}
+    	connexion.Deconnexion();
     }
 
-    public static void main(String[] args) {
-        try {
-            readStops();
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+    public static void main(String[] args) throws SQLException {
+//        try {
+//            readStops();
+//        } catch (IOException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
     }
 
     static class Line {
