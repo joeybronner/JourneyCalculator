@@ -3,6 +3,7 @@ package aStar;
 import aStar.utils.Console;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AreaMap {
 
@@ -51,104 +52,133 @@ public class AreaMap {
         	// Ici, va falloir, soit : 
         	//     - Aller chercher dans la base de données
         	//     - Ouvrir et lire les fichiers csv ou txt
-        	
-        	Station station;
-    	
-        	station = map.get(4).get(9);
-        	station.nomStat = "Hotel de ville";
-        	station.nomLign = "Ligne 3";
-            station.addNeighborAtList((map.get(11).get(9)));
-
-            station = map.get(4).get(17);
-            station.nomStat = "Invalides";
-        	station.nomLign = "Ligne 4";
-            station.addNeighborAtList((map.get(9).get(17)));
-
-            station = map.get(9).get(17);
-            station.nomStat = "Europe";
-        	station.nomLign = "Ligne 4";
-            station.addNeighborAtList(map.get(13).get(14));
-            station.addNeighborAtList(map.get(4).get(17));
-
-            station = map.get(11).get(4);
-            station.nomStat = "Louis Blanc";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(11).get(9));
-
-            station = map.get(11).get(9);
-            station.nomStat = "Belleville";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(11).get(4));
-            station.addNeighborAtList(map.get(21).get(9));
-            station.addNeighborAtList(map.get(13).get(14));
-            station.addNeighborAtList(map.get(4).get(9));
 
 
-            station = map.get(13).get(14);
-            station.nomStat = "Barbés";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(16).get(13));
-            station.addNeighborAtList(map.get(17).get(17));
-            station.addNeighborAtList(map.get(9).get(17));
-            station.addNeighborAtList(map.get(11).get(9));
+            HashMap<Integer, HashMap<Integer, Station>> maMap = new HashMap<Integer, HashMap<Integer, Station>>();
+            HashMap<Integer, Station> colQuatre = new HashMap<Integer, Station>();
+//            for(Station s: stations){
+//                if(map.get(s.getX()) == null)
+//                    map.put(s.getX(), new HashMap<s.getY(), s>);
+//                else {
+//                    HashMap<Integer, Station> hs = map.get(s.getX());
+//                    hs.put(s.getY(), s);
+//                    map.put(s.getX(), hs)
+//
+//                }
+//            }
+            Station station1 = new Station(4, 9, "Hotel de ville");
+            station1.nomLign = "Ligne 3";
+            colQuatre.put(9, station1);
 
-            station = map.get(13).get(24);
-            station.nomStat = "Trocadéro";
-        	station.nomLign = "Ligne 1";
-            station.addNeighborAtList(map.get(19).get(22));
+            Station station2 = new Station(4, 17, "Invalides");
+            station2.nomLign = "Ligne 4";
+            colQuatre.put(17, station2);
+            maMap.put(4, colQuatre);
 
-            station = map.get(16).get(13);
-            station.nomStat = "Pyramides";
-        	station.nomLign = "Ligne 4";
-            station.addNeighborAtList(map.get(21).get(13));
-            station.addNeighborAtList(map.get(13).get(14));
+            HashMap<Integer, Station> colNeuf = new HashMap<Integer, Station>();
+            Station station3 = new Station(9, 17, "Europe");
+            station3.nomLign = "Ligne 4";
+            colNeuf.put(17, station3);
+            maMap.put(9, colNeuf);
 
-            station = map.get(17).get(17);
-            station.nomStat = "Alexandre Dumas";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(21).get(17));
-            station.addNeighborAtList(map.get(13).get(14));
+            Station station4 = new Station(11, 4, "Louis Blanc");
+            station4.nomLign = "Ligne 2";
+            HashMap<Integer, Station> colOnze = new HashMap<Integer, Station>();
+            colOnze.put(4, station4);
 
-            station = map.get(19).get(22);
-            station.nomStat = "Issy";
-        	station.nomLign = "Ligne 1";
-            station.addNeighborAtList(map.get(21).get(17));
-            station.addNeighborAtList(map.get(13).get(24));
+            Station station5 = new Station(11, 9, "Belleville");
+            station5.nomLign = "Ligne 2";
+            colOnze.put(9, station5);
+            maMap.put(11, colOnze);
 
-            station = map.get(21).get(4);
-            station.nomStat = "Brochant";
-        	station.nomLign = "Ligne 1";
-            station.addNeighborAtList(map.get(21).get(19));
+            Station station6 = new Station(13, 14, "Barbés");
+            station6.nomLign = "Ligne 2";
+            HashMap<Integer, Station> colTreize = new HashMap<Integer, Station>();
+            colTreize.put(14, station6);
 
-            station = map.get(21).get(9);
-            station.nomStat = "Pyrénées";
-        	station.nomLign = "Ligne 3";
-            station.addNeighborAtList(map.get(21).get(4));
-            station.addNeighborAtList(map.get(31).get(9));
-            station.addNeighborAtList(map.get(21).get(13));
-            station.addNeighborAtList(map.get(11).get(9));
 
-            station = map.get(21).get(13);
-            station.nomStat = "Cadet";
-        	station.nomLign = "Ligne 1";
-            station.addNeighborAtList(map.get(21).get(9));
-            station.addNeighborAtList(map.get(28).get(13));
-            station.addNeighborAtList(map.get(21).get(17));
-            station.addNeighborAtList(map.get(16).get(13));
+            Station station7 = new Station(13, 24, "Trocadéro");
+            station7.nomLign = "Ligne 1";
+            colTreize.put(24, station7);
+            maMap.put(13, colTreize);
 
-            station = map.get(21).get(17);
-            station.nomStat = "Billancourt";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(21).get(13));
-            station.addNeighborAtList(map.get(24).get(17));
-            station.addNeighborAtList(map.get(19).get(22));
-            station.addNeighborAtList(map.get(17).get(17));
+            Station station8 = new Station(16, 13, "Pyramides");
+            station8.nomLign = "Ligne 4";
+            HashMap<Integer, Station> colSeize = new HashMap<Integer, Station>();
+            colSeize.put(13, station8);
+            maMap.put(16, colSeize);
 
-            station = map.get(24).get(17);
-            station.nomStat = "Couronnes";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(28).get(19));
-            station.addNeighborAtList(map.get(21).get(17));
+            Station station9 = new Station(17, 17, "Alexandre Dumas");
+            station8.nomLign = "Ligne 2";
+            HashMap<Integer, Station> colDixSept = new HashMap<Integer, Station>();
+            colDixSept.put(17, station9);
+            maMap.put(17, colDixSept);
+
+
+            Station station10 = new Station(19, 22, "Issy");
+            station10.nomLign = "Ligne 1";
+            HashMap<Integer, Station> colDixNeuf = new HashMap<Integer, Station>();
+            colDixNeuf.put(22, station10);
+            maMap.put(19, colDixNeuf);
+
+            Station station11 = new Station(21, 4, "Brochant");
+            station11.nomLign = "Ligne 1";
+            HashMap<Integer, Station> col21 = new HashMap<Integer, Station>();
+            col21.put(4, station11);
+
+            Station station12 = new Station(21, 9, "Pyrénées");
+            station12.nomLign = "Ligne 3";
+            col21.put(9, station12);
+
+            Station station13 = new Station(21, 13, "Cadet");
+            station13.nomLign = "Ligne 1";
+            col21.put(13, station13);
+
+            Station station14 = new Station(21, 17, "Billancourt");
+            station14.nomLign = "Ligne 2";
+            col21.put(17, station14);
+            maMap.put(21, col21);
+
+
+            Station station15 = new Station(24, 17, "Couronnes");
+            station15.nomLign = "Ligne 2";
+
+
+            station1.addNeighborAtList(station5);
+            station2.addNeighborAtList(station3);
+            station3.addNeighborAtList(station6);
+            station3.addNeighborAtList(station2);
+            station4.addNeighborAtList(station5);
+            station5.addNeighborAtList(station4);
+            station5.addNeighborAtList(station12);
+            station5.addNeighborAtList(station6);
+            station5.addNeighborAtList(station1);
+            station6.addNeighborAtList(station8);
+            station6.addNeighborAtList(station9);
+            station6.addNeighborAtList(station3);
+            station6.addNeighborAtList(station5);
+            station7.addNeighborAtList(station10);
+            station8.addNeighborAtList(station13);
+            station8.addNeighborAtList(station7);
+            station9.addNeighborAtList(station14);
+            station9.addNeighborAtList(station6);
+            station10.addNeighborAtList(station14);
+            station10.addNeighborAtList(station7);
+            station11.addNeighborAtList(map.get(21).get(19));
+            station12.addNeighborAtList(station11);
+            station12.addNeighborAtList(map.get(31).get(9));
+            station12.addNeighborAtList(station13);
+            station12.addNeighborAtList(station5);
+            station13.addNeighborAtList(station12);
+            station13.addNeighborAtList(map.get(28).get(13));
+            station13.addNeighborAtList(station14);
+            station13.addNeighborAtList(station8);
+            station14.addNeighborAtList(station13);
+            station14.addNeighborAtList(map.get(24).get(17));
+            station14.addNeighborAtList(station10);
+            station14.addNeighborAtList(station9);
+            station15.addNeighborAtList(map.get(28).get(19));
+            station15.addNeighborAtList(station14);
 
             station = map.get(28).get(13);
             station.nomStat = "Saint-Ouen";
