@@ -10,15 +10,18 @@ public class AStar {
     Console log = new Console();
     private AreaMap map;
     private AStarHeuristic heuristic;
-    /**
-     * closedList The list of Nodes not searched yet, sorted by their distance to the goal as guessed by our heuristic.
-     */
     private ArrayList<Station> closedList;
     private SortedNodeList openList;
     private SortedNodeList rechercheList;
     private ArrayList<Station> cheminList;
     private Path shortestPath;
 
+    /**
+     * AStar constructor
+     *
+     * @param map
+     * @param heuristic
+     */
     public AStar(AreaMap map, AStarHeuristic heuristic) {
         this.map = map;
         this.heuristic = heuristic;
@@ -29,6 +32,14 @@ public class AStar {
         rechercheList = new SortedNodeList();
     }
 
+    /**
+     *
+     * @param startX
+     * @param startY
+     * @param goalX
+     * @param goalY
+     * @return the shortest path to the goal
+     */
     public Path calcShortestPath(int startX, int startY, int goalX, int goalY) {
 
         //mark start and goal node
@@ -90,6 +101,14 @@ public class AStar {
         return null;
     }
 
+    /**
+     *
+     * @param startX
+     * @param startY
+     * @param goalX
+     * @param goalY
+     * @return the path witj the least of changes
+     */
     public Path calcCoolestPath(int startX, int startY, int goalX, int goalY) {
 
         // Station de début et de fin
@@ -218,6 +237,9 @@ public class AStar {
         return null;
     }
 
+    /**
+     * Print map
+     */
     public void printPath() {
         Station node;
 
@@ -254,6 +276,9 @@ public class AStar {
 
     }
 
+    /**
+     * print path
+     */
     public void printItineraire() {
         int nbChange = 0;
         String nomOldLign = map.getStartNode().nomLign;
@@ -271,7 +296,7 @@ public class AStar {
             nomOldLign = map.getNode(x, y).nomLign;
 
             if (i != shortestPath.getLength() - 1) {
-                System.out.println("Arrét né" + numStat + " : " + map.getNode(x, y).nomStat + " (" + map.getNode(x, y).nomLign + ")");
+                System.out.println("Arrét num" + numStat + " : " + map.getNode(x, y).nomStat + " (" + map.getNode(x, y).nomLign + ")");
             } else {
                 System.out.println("Arrivée   : " + map.getNode(x, y).nomStat + " (" + map.getNode(x, y).nomLign + ")");
             }
@@ -280,6 +305,10 @@ public class AStar {
         System.out.println("\nNombre de changements de ligne(s) : " + nbChange);
     }
 
+    /**
+     *
+     * @return path
+     */
     public ArrayList<Station> getItineraire() {
         ArrayList<Station> stations = new ArrayList<Station>();
         stations.add(map.getStartNode());
@@ -294,6 +323,11 @@ public class AStar {
         return stations;
     }
 
+    /**
+     *
+     * @param node
+     * @return the reconstructed path
+     */
     private Path reconstructPath(Station node) {
         Path path = new Path();
 
@@ -305,6 +339,9 @@ public class AStar {
         return path;
     }
 
+    /**
+     * Sorted node list
+     */
     private class SortedNodeList {
         private ArrayList<Station> list = new ArrayList<Station>();
 

@@ -2,6 +2,9 @@ package connect;
 
 import java.sql.*;
 
+/**
+ * Class for Database interactions
+ */
 public class DatabaseConnect
 {
     Connection con = null; 
@@ -12,8 +15,11 @@ public class DatabaseConnect
     String passwd;
     public static final String DRIVER = "com.mysql.jdbc.Driver"; 
     public static final String URL = "jdbc:mysql://109.190.180.29:3306/journey";
-    
-    
+
+
+    /**
+     * Connection opening
+     */
     public void Connexion()
     {     
     	login="journey";
@@ -36,7 +42,13 @@ public class DatabaseConnect
             System.out.println(ex); 
         } 
     }
-    
+
+    /**
+     * Database searching
+     *
+     * @param query
+     * @return result of the query
+     */
     public ResultSet Rechercher(String query)
     { 
          try
@@ -47,9 +59,13 @@ public class DatabaseConnect
          { 
         	 System.err.println(ex); 
          } 
-     return re; 
+     return re;
     }
-    
+
+    /**
+     * Database adding
+     * @param query
+     */
     public void Ajouter(String query)
     { 
     	try
@@ -59,9 +75,13 @@ public class DatabaseConnect
     	catch (SQLException ex)
     	{ 
              System.err.println(ex); 
-    	}      
+    	}
     }
-    
+
+    /**
+     * Database modification
+     * @param query
+     */
     public void Modifier(String query)
     {
         try {
@@ -70,10 +90,14 @@ public class DatabaseConnect
     	} 
     	catch (SQLException ex)
     	{ 
-    		 System.err.println(ex); 
-    	}    
-    }   
-    
+    		 System.err.println(ex);
+        }
+    }
+
+    /**
+     * Trucate table
+     * @param table
+     */
     public void ViderTable(String table)
     { 
     	try
@@ -84,9 +108,12 @@ public class DatabaseConnect
     	catch (SQLException ex)
     	{ 
     		 System.err.println(ex); 
-    	}    
+    	}
     }
-    
+
+    /**
+     * Closing database connection
+     */
     public void Deconnexion()
     { 
     	try

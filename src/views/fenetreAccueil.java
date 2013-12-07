@@ -53,11 +53,20 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static ButtonGroup groupBoutRadio;
     public static HashMap<String, Color> couleurs = new HashMap<String, Color>();
 
+    /**
+     * Build the main frame interface
+     */
     public fenetreAccueil() {
         super();
         build();
     }
 
+    /**
+     * Start the program
+     *
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         // --- INITIALISATION --- //
         log.ecrireConsole("Initialisation de la carte...");
@@ -76,6 +85,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * Initialize the frame and adds actionsListeners.
+     */
     private void build() {
         setTitle("Metro Parisien"); //On donne un titre à l'application
         setSize(1000, 500); //On donne une taille à notre fenêtre
@@ -206,6 +218,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         setVisible(true); // On affiche la fenetre a l'ecran
     }
 
+    /**
+     * Actions handling
+     * @param e
+     */
     public void actionPerformed(ActionEvent e) {
 
         Object source = e.getSource();
@@ -322,6 +338,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * Call to the database and update coordinates
+     */
     private void MAJCoordonneesBDD() {
         try {
             Scrapper.MAJCoordonnees();
@@ -329,6 +348,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     *        Call to the database and update stops
+     */
     private void MAJStopsBDD() {
         try {
             Scrapper.MAJStops();
@@ -336,6 +358,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * Call to the database and update lines
+     */
     private void MAJLinesBDD() {
         try {
             Scrapper.MAJLines();
@@ -343,6 +368,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * initialize the menu bar, with actions
+     */
     private void MenuBar() {
         // ------------------------------- MENU BAR -------------------------------
         // --- Barre principale
@@ -380,6 +408,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // -------------------------------------------------------------------------
     }
 
+    /**
+     * Custom Cell render for the results displaying
+     */
     private static class ColorCellRender extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
