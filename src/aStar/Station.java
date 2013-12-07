@@ -278,4 +278,20 @@ public class Station implements Comparable<Station>
                         return 0;
                 }
         }
+
+    public String getNomStat() {
+        return nomStat;
+    }
+
+    public void setNomStat(String nomStat) {
+        this.nomStat = nomStat;
+    }
+
+    public String getNomLign() {
+        return nomLign;
+    }
+
+    public void setNomLign(String nomLign) {
+        this.nomLign = nomLign;
+    }
 }

@@ -1,11 +1,6 @@
 package connect;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DatabaseConnect
 {
@@ -68,11 +63,10 @@ public class DatabaseConnect
     }
     
     public void Modifier(String query)
-    { 
-    	try
-    	{ 
-		     sta.executeUpdate(query); 
-		     System.out.println("Modifié.");
+    {
+        try {
+            sta.executeUpdate(query);
+            System.out.println("Modifié.");
     	} 
     	catch (SQLException ex)
     	{ 
@@ -96,11 +90,10 @@ public class DatabaseConnect
     public void Deconnexion()
     { 
     	try
-    	{ 
-    		 re.close(); 
-    		 System.out.println("-- Connexion ferm�e --");
-    	}
-    	catch (SQLException e)
+    	{
+            re.close();
+            System.out.println("-- Connexion fermée --");
+        } catch (SQLException e)
     	{ 
     		 System.out.println("Echec de fermeture de la connexion."); 
     	} 
