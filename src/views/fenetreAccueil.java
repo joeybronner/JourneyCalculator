@@ -128,26 +128,30 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         choix2.add(refresh);
 
         // -------------------------------------- //
-
-        comboBoxDepart = new JComboBox();
-        comboBoxDepart.setOpaque(false);
-        comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
+        
+        Dimension size = new Dimension(100, 20);
+        
+    	comboBoxDepart = new JComboBox();
+    	comboBoxDepart.setOpaque(false);
+    	comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
         comboBoxDepart.setEnabled(false);
-
+        comboBoxDepart.setPrototypeDisplayValue(size);
+        
         comboBoxArrivee = new JComboBox();
         comboBoxArrivee.setOpaque(false);
         comboBoxArrivee.addItem("Veuillez selectionner une station dans la liste");
         comboBoxArrivee.setEnabled(false);
-
-
-        panelPreferences.add(comboBoxDepart, BorderLayout.EAST);
-        panelPreferences.add(comboBoxArrivee, BorderLayout.WEST);
-
-        panelPreferences.setMaximumSize(choix2.getPreferredSize());
-
+        comboBoxArrivee.setPrototypeDisplayValue(size);
+     
+        
+        panelPreferences.add(comboBoxDepart, BorderLayout.WEST);
+        panelPreferences.add(comboBoxArrivee, BorderLayout.EAST);
+        
+        panelPreferences.setMaximumSize(choix2.getPreferredSize() );
+       
         // -------------------------------------- //
-
-
+       
+        
         JPanel choix3 = new JPanel();
         choix3.setOpaque(false);
 
@@ -202,6 +206,32 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         setLocationRelativeTo(null); //On centre la fenêtre sur l'ecran
         setVisible(true); // On affiche la fenetre a l'ecran
     }
+    
+	public void actionPerformed(ActionEvent e)
+	{
+		
+		Object source=e.getSource();
+		
+		if (source==coord)
+		{
+			MAJCoordonneesBDD();
+		}
+		else if (source==stops)
+		{
+			MAJStopsBDD();
+		}
+		else if (source==lines)
+		{
+			MAJLinesBDD();
+		}
+		else if (source==valider)
+		{
+			chrono.demarrer();
+			
+	        if (rapide.isSelected()) {
+	        	pathFinder.calcShortestPath(depaX, depaY, destX, destY);
+	            chrono.arreter();
+	            log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
 
     public void actionPerformed(ActionEvent e) {
 
@@ -383,4 +413,3 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         }
     }
 }
-
