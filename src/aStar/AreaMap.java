@@ -139,10 +139,43 @@ public class AreaMap {
             col21.put(17, station14);
             maMap.put(21, col21);
 
-
             Station station15 = new Station(24, 17, "Couronnes");
             station15.nomLign = "Ligne 2";
-
+            HashMap<Integer, Station> col24 = new HashMap<Integer, Station>();
+            col24.put(17, station15);
+            maMap.put(24, col24);
+            
+            Station station16 = new Station(28, 13, "Saint-Ouen");
+        	station16.nomLign = "Ligne 4";
+        	HashMap<Integer, Station> col28 = new HashMap<Integer, Station>();
+        	col28.put(13, station16);
+        	
+        	Station station17 = new Station(28, 19, "La Chapelle");
+        	station17.nomLign = "Ligne 2";
+        	col28.put(19, station17);
+        	maMap.put(28, col28);
+        	
+        	Station station18 = new Station(31, 9, "Place des Fétes");
+        	station18.nomLign = "Ligne 3";
+        	HashMap<Integer, Station> col31 = new HashMap<Integer, Station>();
+        	col31.put(9, station18);
+        	maMap.put(31, col31);
+        	
+        	Station station19 = new Station(32, 21, "Opéra");
+        	station19.nomLign = "Ligne 2";
+        	HashMap<Integer, Station> col32 = new HashMap<Integer, Station>();
+        	col32.put(21, station19);
+        	maMap.put(32, col32);
+        	
+        	Station station20 = new Station(34, 6, "Mairie des Lilas");
+        	station20.nomLign = "Ligne 3";
+        	HashMap<Integer, Station> col34 = new HashMap<Integer, Station>();
+        	col34.put(6, station20);
+        	
+        	Station station21 = new Station(34, 13, "Clichy");
+        	station21.nomLign = "Ligne 4";
+        	col34.put(13, station21);
+        	maMap.put(34, col34);
 
             station1.addNeighborAtList(station5);
             station2.addNeighborAtList(station3);
@@ -164,55 +197,30 @@ public class AreaMap {
             station9.addNeighborAtList(station6);
             station10.addNeighborAtList(station14);
             station10.addNeighborAtList(station7);
-            station11.addNeighborAtList(map.get(21).get(19));
+            station11.addNeighborAtList(station12);
             station12.addNeighborAtList(station11);
-            station12.addNeighborAtList(map.get(31).get(9));
+            station12.addNeighborAtList(station18);
             station12.addNeighborAtList(station13);
             station12.addNeighborAtList(station5);
             station13.addNeighborAtList(station12);
-            station13.addNeighborAtList(map.get(28).get(13));
+            station13.addNeighborAtList(station16);
             station13.addNeighborAtList(station14);
             station13.addNeighborAtList(station8);
             station14.addNeighborAtList(station13);
-            station14.addNeighborAtList(map.get(24).get(17));
+            station14.addNeighborAtList(station15);
             station14.addNeighborAtList(station10);
             station14.addNeighborAtList(station9);
-            station15.addNeighborAtList(map.get(28).get(19));
+            station15.addNeighborAtList(station17);
             station15.addNeighborAtList(station14);
-
-            station = map.get(28).get(13);
-            station.nomStat = "Saint-Ouen";
-        	station.nomLign = "Ligne 4";
-            station.addNeighborAtList(map.get(34).get(13));
-            station.addNeighborAtList(map.get(21).get(13));
-
-            station = map.get(28).get(19);
-            station.nomStat = "La Chapelle";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(32).get(21));
-            station.addNeighborAtList(map.get(24).get(17));
-
-            station = map.get(31).get(9);
-            station.nomStat = "Place des Fétes";
-        	station.nomLign = "Ligne 3";
-            station.addNeighborAtList(map.get(34).get(6));
-            station.addNeighborAtList(map.get(21).get(9));
-
-            station = map.get(32).get(21);
-            station.nomStat = "Opéra";
-        	station.nomLign = "Ligne 2";
-            station.addNeighborAtList(map.get(28).get(19));
-
-            station = map.get(34).get(6);
-            station.nomStat = "Mairie des Lilas";
-        	station.nomLign = "Ligne 3";
-            station.addNeighborAtList(map.get(31).get(9));
-
-
-            station = map.get(34).get(13);
-            station.nomStat = "Clichy";
-        	station.nomLign = "Ligne 4";
-            station.addNeighborAtList(map.get(28).get(13));
+            station16.addNeighborAtList(station21);
+            station16.addNeighborAtList(station13);
+            station17.addNeighborAtList(station19);
+            station17.addNeighborAtList(station15);
+            station18.addNeighborAtList(station20);
+            station18.addNeighborAtList(station12);
+            station19.addNeighborAtList(station17);
+            station20.addNeighborAtList(station18);
+            station21.addNeighborAtList(station16);
 
 
         }
