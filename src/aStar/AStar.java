@@ -260,9 +260,7 @@ public class AStar {
 
                         for(int y=0; y<map.getMapHeight(); y++) {
                                 node = map.getNode(x, y);
-                                if (node.isObstacle) {
-                                        System.out.print("X");
-                                } else if (node.isStart) {
+                                if (node.isStart) {
                                         System.out.print("s");
                                 } else if (node.isDestination) {
                                         System.out.print("g");

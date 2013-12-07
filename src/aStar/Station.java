@@ -6,14 +6,14 @@ public class Station implements Comparable<Station>
 {
         // Une station
         AreaMap map;
-        Station north;
-        Station northEast;
-        Station east;
-        Station southEast;
-        Station south;
-        Station southWest;
-        Station west;
-        Station northWest;
+//        Station north;
+//        Station northEast;
+//        Station east;
+//        Station southEast;
+//        Station south;
+//        Station southWest;
+//        Station west;
+//        Station northWest;
         ArrayList<Station> neighborList;
         boolean visited;
         int distanceFromStart;
@@ -21,7 +21,7 @@ public class Station implements Comparable<Station>
         Station previousNode;
         int x;
         int y;
-        boolean isObstacle;
+//        boolean isObstacle;
         boolean isStart;
         boolean isDestination;
         boolean hasChange;
@@ -35,142 +35,28 @@ public class Station implements Comparable<Station>
                 this.y = y;
                 this.visited = false;
                 this.distanceFromStart = Integer.MAX_VALUE;
-                this.isObstacle = false;
                 this.isStart = false;
                 this.isDestination = false;
-                nomStat=nom_stat;
+                this.nomStat=nom_stat;
         }
         
-        Station (int x, int y, boolean visited, int distanceFromStart, boolean isObstical, boolean isStart, boolean isDestination) {
-                neighborList = new ArrayList<Station>();
-                this.x = x;
-                this.y = y;
-                this.visited = visited;
-                this.distanceFromStart = distanceFromStart;
-                this.isObstacle = isObstical;
-                this.isStart = isStart;
-                this.isDestination = isDestination;
-        }
-        
-        public Station getNorth() {
-                return north;
-        }
-
-        public void setNorth(Station north)
-        {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.north))
-                        neighborList.remove(this.north);
-                neighborList.add(north);
-                
-                //set the new Node
-                this.north = north;
-        }
-
-        public Station getNorthEast()
-        {
-                return northEast;
-        }
-
-        public Station getEast()
-        {
-            return east;
-        }
-        
-        public void setNorthEast(Station northEast)
-        {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.northEast))
-                        neighborList.remove(this.northEast);
-                neighborList.add(northEast);
-                
-                //set the new Node
-                this.northEast = northEast;
-        }
-
-        public void setEast(Station east)
-        {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.east))
-                        neighborList.remove(this.east);
-                neighborList.add(east);
-                
-                //set the new Node
-                this.east = east;
-        }
-
-        public Station getSouthEast() {
-                return southEast;
-        }
-
-        public void setSouthEast(Station southEast) {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.southEast))
-                        neighborList.remove(this.southEast);
-                neighborList.add(southEast);
-                
-                //set the new Node
-                this.southEast = southEast;
-        }
-
-        public Station getSouth() {
-                return south;
-        }
-
-        public void setSouth(Station south) {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.south))
-                        neighborList.remove(this.south);
-                neighborList.add(south);
-                
-                //set the new Node
-                this.south = south;
-        }
-
-        public Station getSouthWest() {
-                return southWest;
-        }
-
-        public void setSouthWest(Station southWest) {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.southWest))
-                        neighborList.remove(this.southWest);
-                neighborList.add(southWest);
-                
-                //set the new Node
-                this.southWest = southWest;
-        }
-
-        public Station getWest() {
-                return west;
-        }
-
-        public void setWest(Station west) {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.west))
-                        neighborList.remove(this.west);
-                neighborList.add(west);
-                
-                //set the new Node
-                this.west = west;
-        }
-
-        public Station getNorthWest() {
-                return northWest;
-        }
-
-        public void setNorthWest(Station northWest) {
-                //replace the old Node with the new one in the neighborList
-                if (neighborList.contains(this.northWest))
-                        neighborList.remove(this.northWest);
-                neighborList.add(northWest);
-                
-                //set the new Node
-                this.northWest = northWest;
-        }
+//        Station (int x, int y, boolean visited, int distanceFromStart, boolean isObstical, boolean isStart, boolean isDestination) {
+//                neighborList = new ArrayList<Station>();
+//                this.x = x;
+//                this.y = y;
+//                this.visited = visited;
+//                this.distanceFromStart = distanceFromStart;
+//                this.isStart = isStart;
+//                this.isDestination = isDestination;
+//        }
+//       
         
         public ArrayList<Station> getNeighborList() {
                 return neighborList;
+        }
+        
+        public void addNeighborAtList(Station directNeighbor) {
+        		neighborList.add(directNeighbor);
         }
 
         public boolean isVisited() {
@@ -237,14 +123,6 @@ public class Station implements Comparable<Station>
         public void setY(int y) {
                 this.y = y;
         }
-        
-        public boolean isObstical() {
-                return isObstacle;
-        }
-
-        public void setObstical(boolean isObstical) {
-                this.isObstacle = isObstical;
-        }
 
         public boolean isStart() {
                 return isStart;
@@ -278,4 +156,5 @@ public class Station implements Comparable<Station>
                         return 0;
                 }
         }
+        
 }
