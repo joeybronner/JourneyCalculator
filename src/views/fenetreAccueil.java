@@ -129,19 +129,22 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
         // -------------------------------------- //
 
+        Dimension size = new Dimension(100, 20);
         comboBoxDepart = new JComboBox();
         comboBoxDepart.setOpaque(false);
         comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
         comboBoxDepart.setEnabled(false);
+        comboBoxDepart.setPrototypeDisplayValue(size);
 
         comboBoxArrivee = new JComboBox();
         comboBoxArrivee.setOpaque(false);
         comboBoxArrivee.addItem("Veuillez selectionner une station dans la liste");
         comboBoxArrivee.setEnabled(false);
+        comboBoxArrivee.setPrototypeDisplayValue(size);
 
 
-        panelPreferences.add(comboBoxDepart, BorderLayout.EAST);
-        panelPreferences.add(comboBoxArrivee, BorderLayout.WEST);
+        panelPreferences.add(comboBoxDepart, BorderLayout.WEST);
+        panelPreferences.add(comboBoxArrivee, BorderLayout.EAST);
 
         panelPreferences.setMaximumSize(choix2.getPreferredSize());
 
