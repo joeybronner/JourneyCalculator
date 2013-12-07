@@ -43,7 +43,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static int typeItineraire = 99;
     private static JMenuBar barreMenu;
     private static JMenu bdd, maj, infos;
-    private static JMenuItem coord, lines, stops, develop;
+    private static JMenuItem coord, lines, stops, develop, type, voisins;
     private static JPanel panelPreferences, panelItineraire, panelValider;
     private static JComboBox comboBoxDepart, comboBoxArrivee;
     private static JButton valider, refresh;
@@ -232,6 +232,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             MAJStopsBDD();
         } else if (source == lines) {
             MAJLinesBDD();
+        } else if (source == type) {
+            MAJTypeBDD();
+        } else if (source == voisins) {
+            MAJVoisinsBDD();
         } else if (source == valider) {
             chrono.demarrer();
 
@@ -283,8 +287,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 try {
                     comboBoxDepart.removeAllItems();
                     comboBoxArrivee.removeAllItems();
-                    s.readStops("SELECT id_stop, name_stop, type_stop FROM tb_stops ORDER BY type_stop, name_stop");
-                    Collection<Scrapper.Arret> a = s.getArrs().values();
+                    s.readStations("SELECT stop_name, parent_id, stop_type FROM tb_stopstype JOIN tb_stops ON (tb_stopstype.parent_id = tb_stops.parent_station) ORDER BY stop_name DESC");
+
+                    Collection<Scrapper.Station> a = s.getStations().values();
                     Iterator it = a.iterator();
                     while (it.hasNext()) {
                         Object ar = it.next();
@@ -308,8 +313,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 try {
                     comboBoxDepart.removeAllItems();
                     comboBoxArrivee.removeAllItems();
-                    s.readStops("SELECT id_stop, name_stop, type_stop FROM tb_stops WHERE type_stop='tram' ORDER BY type_stop, name_stop");
-                    Collection<Scrapper.Arret> a = s.getArrs().values();
+                    //s.readStations("SELECT st.stop_id, stop_name, stop_type FROM tb_stops st JOIN tb_stopstype ty ON (st.parent_station = ty.parent_id) WHERE stop_type='tram' ORDER BY stop_type, stop_name");
+                    s.readStations("SELECT stop_name, parent_id, stop_type FROM tb_stopstype JOIN tb_stops ON (tb_stopstype.parent_id = tb_stops.parent_station) WHERE stop_type='tram' ORDER BY stop_name DESC");
+
+                    Collection<Scrapper.Station> a = s.getStations().values();
                     Iterator it = a.iterator();
                     while (it.hasNext()) {
                         Object ar = it.next();
@@ -347,6 +354,13 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         } catch (Exception err) {
         }
     }
+    private void MAJVoisinsBDD()
+    {
+        try {
+            Scrapper.MAJNeighbors();
+        } catch (Exception err) {
+        }
+    }
 
     /**
      *        Call to the database and update stops
@@ -364,6 +378,12 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private void MAJLinesBDD() {
         try {
             Scrapper.MAJLines();
+        } catch (Exception err) {
+        }
+    }
+    private void MAJTypeBDD() {
+        try {
+            Scrapper.MAJType();
         } catch (Exception err) {
         }
     }
@@ -400,6 +420,13 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         lines = new JMenuItem("lines.csv...");
         lines.addActionListener(this);
         maj.add(lines);
+        type = new JMenuItem("type.csv...");
+        type.addActionListener(this);
+        maj.add(type);
+        
+        voisins = new JMenuItem("neighbors.csv...");
+        voisins.addActionListener(this);
+        maj.add(voisins);
 
         develop = new JMenuItem("Developpeurs");
         develop.addActionListener(this);

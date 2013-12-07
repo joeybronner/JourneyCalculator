@@ -5,14 +5,6 @@ import java.util.ArrayList;
 public class Station implements Comparable<Station> {
     // Une station
     AreaMap map;
-    //        Station north;
-//        Station northEast;
-//        Station east;
-//        Station southEast;
-//        Station south;
-//        Station southWest;
-//        Station west;
-//        Station northWest;
     ArrayList<Station> neighborList;
     boolean visited;
     int distanceFromStart;
