@@ -6,7 +6,7 @@ public class Station implements Comparable<Station>
 {
         // Une station
         AreaMap map;
-//        Station north;
+    //        Station north;
 //        Station northEast;
 //        Station east;
 //        Station southEast;
@@ -14,16 +14,16 @@ public class Station implements Comparable<Station>
 //        Station southWest;
 //        Station west;
 //        Station northWest;
-        ArrayList<Station> neighborList;
-        boolean visited;
+    ArrayList<Station> neighborList;
+    boolean visited;
         int distanceFromStart;
         int heuristicDistanceFromGoal;
         Station previousNode;
         int x;
         int y;
-//        boolean isObstacle;
-        boolean isStart;
-        boolean isDestination;
+    //        boolean isObstacle;
+    boolean isStart;
+    boolean isDestination;
         boolean hasChange;
         String nomStat;
         String nomLign;
@@ -37,9 +37,9 @@ public class Station implements Comparable<Station>
                 this.distanceFromStart = Integer.MAX_VALUE;
                 this.isStart = false;
                 this.isDestination = false;
-                this.nomStat=nom_stat;
+            this.nomStat = nom_stat;
         }
-        
+
 //        Station (int x, int y, boolean visited, int distanceFromStart, boolean isObstical, boolean isStart, boolean isDestination) {
 //                neighborList = new ArrayList<Station>();
 //                this.x = x;
@@ -50,16 +50,16 @@ public class Station implements Comparable<Station>
 //                this.isDestination = isDestination;
 //        }
 //       
-        
-        public ArrayList<Station> getNeighborList() {
-                return neighborList;
-        }
-        
-        public void addNeighborAtList(Station directNeighbor) {
-        		neighborList.add(directNeighbor);
-        }
 
-        public boolean isVisited() {
+    public ArrayList<Station> getNeighborList() {
+        return neighborList;
+    }
+
+    public void addNeighborAtList(Station directNeighbor) {
+        neighborList.add(directNeighbor);
+    }
+
+    public boolean isVisited() {
                 return visited;
         }
 
@@ -172,5 +172,5 @@ public class Station implements Comparable<Station>
     public void setNomLign(String nomLign) {
         this.nomLign = nomLign;
     }
-        
+
 }

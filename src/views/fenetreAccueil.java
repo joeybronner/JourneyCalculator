@@ -51,7 +51,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static JRadioButton rapide, changement;
     private static JCheckBox metro, tram, rer, all;
     private static ButtonGroup groupBoutRadio;
-    static HashMap<String, Color> couleurs = new HashMap<String, Color>();
+    public static HashMap<String, Color> couleurs = new HashMap<String, Color>();
 
     public fenetreAccueil() {
         super();
@@ -128,29 +128,26 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         choix2.add(refresh);
 
         // -------------------------------------- //
-        
-        Dimension size = new Dimension(100, 20);
-        
-    	comboBoxDepart = new JComboBox();
-    	comboBoxDepart.setOpaque(false);
-    	comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
+
+        comboBoxDepart = new JComboBox();
+        comboBoxDepart.setOpaque(false);
+        comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
         comboBoxDepart.setEnabled(false);
-        comboBoxDepart.setPrototypeDisplayValue(size);
-        
+
         comboBoxArrivee = new JComboBox();
         comboBoxArrivee.setOpaque(false);
         comboBoxArrivee.addItem("Veuillez selectionner une station dans la liste");
         comboBoxArrivee.setEnabled(false);
-        comboBoxArrivee.setPrototypeDisplayValue(size);
-     
-        
-        panelPreferences.add(comboBoxDepart, BorderLayout.WEST);
-        panelPreferences.add(comboBoxArrivee, BorderLayout.EAST);
-        
-        panelPreferences.setMaximumSize(choix2.getPreferredSize() );
-       
+
+
+        panelPreferences.add(comboBoxDepart, BorderLayout.EAST);
+        panelPreferences.add(comboBoxArrivee, BorderLayout.WEST);
+
+        panelPreferences.setMaximumSize(choix2.getPreferredSize());
+
         // -------------------------------------- //
-        
+
+
         JPanel choix3 = new JPanel();
         choix3.setOpaque(false);
 
@@ -188,7 +185,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         panelItineraire.add(new JScrollPane(list));
 
 
-        // ---------------- PANEL DU BAS ---------------- //        
+        // ---------------- PANEL DU BAS ---------------- //
 
         panelValider = new JPanel();
         panelValider.setBackground(new Color(238, 220, 130));
@@ -205,32 +202,6 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         setLocationRelativeTo(null); //On centre la fenêtre sur l'ecran
         setVisible(true); // On affiche la fenetre a l'ecran
     }
-    
-	public void actionPerformed(ActionEvent e)
-	{
-		
-		Object source=e.getSource();
-		
-		if (source==coord)
-		{
-			MAJCoordonneesBDD();
-		}
-		else if (source==stops)
-		{
-			MAJStopsBDD();
-		}
-		else if (source==lines)
-		{
-			MAJLinesBDD();
-		}
-		else if (source==valider)
-		{
-			chrono.demarrer();
-			
-	        if (rapide.isSelected()) {
-	        	pathFinder.calcShortestPath(depaX, depaY, destX, destY);
-	            chrono.arreter();
-	            log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
 
     public void actionPerformed(ActionEvent e) {
 
@@ -252,6 +223,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
                 log.ecrireConsole("\nRésultat:");
                 pathFinder.printPath();
+                pathFinder.printItineraire();
                 ArrayList<Station> itineraire = pathFinder.getItineraire();
                 String[] text = new String[itineraire.size()];
                 for (int i = 0; i < itineraire.size(); i++)
@@ -262,8 +234,6 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 panelItineraire.add(new JScrollPane(list));
                 panelItineraire.revalidate();
                 panelItineraire.repaint();
-
-
             } else if (changement.isSelected()) {
                 pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
                 chrono.arreter();
@@ -272,6 +242,16 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 log.ecrireConsole("\nRésultat:");
                 pathFinder.printPath();
                 pathFinder.printItineraire();
+                ArrayList<Station> itineraire = pathFinder.getItineraire();
+                String[] text = new String[itineraire.size()];
+                for (int i = 0; i < itineraire.size(); i++)
+                    text[i] = itineraire.get(i).getNomStat() + " [" + itineraire.get(i).getNomLign() + "]";
+                JList list = new JList(text);
+                list.setCellRenderer(new ColorCellRender());
+                panelItineraire.removeAll();
+                panelItineraire.add(new JScrollPane(list));
+                panelItineraire.revalidate();
+                panelItineraire.repaint();
             }
         } else if (source == refresh) {
             comboBoxDepart.setEnabled(true);
