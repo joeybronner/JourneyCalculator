@@ -150,7 +150,6 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         panelPreferences.setMaximumSize(choix2.getPreferredSize() );
        
         // -------------------------------------- //
-       
         
         JPanel choix3 = new JPanel();
         choix3.setOpaque(false);

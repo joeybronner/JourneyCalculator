@@ -57,275 +57,140 @@ public class AreaMap {
         	station = map.get(4).get(9);
         	station.nomStat = "Hotel de ville";
         	station.nomLign = "Ligne 3";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(11).get(9));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList((map.get(11).get(9)));
         	
         	station = map.get(4).get(17);
         	station.nomStat = "Invalides";
         	station.nomLign = "Ligne 4";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(9).get(17));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList((map.get(9).get(17)));
         	
         	station = map.get(9).get(17);
         	station.nomStat = "Europe";
         	station.nomLign = "Ligne 4";
-        	//station.setNorth(map.get(1).get(1));
-        	station.setNorthEast(map.get(13).get(14));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(4).get(17));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(13).get(14));
+        	station.addNeighborAtList(map.get(4).get(17));
         	
         	station = map.get(11).get(4);
         	station.nomStat = "Louis Blanc";
         	station.nomLign = "Ligne 2";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	station.setSouth(map.get(11).get(9));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(11).get(9));
         	
         	station = map.get(11).get(9);
         	station.nomStat = "Belleville";
         	station.nomLign = "Ligne 2";
-        	station.setNorth(map.get(11).get(4));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(21).get(9));
-        	station.setSouthEast(map.get(13).get(14));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(4).get(9));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(11).get(4));
+        	station.addNeighborAtList(map.get(21).get(9));
+        	station.addNeighborAtList(map.get(13).get(14));
+        	station.addNeighborAtList(map.get(4).get(9));
+
         	
         	
         	station = map.get(13).get(14);
         	station.nomStat = "Barbés";
         	station.nomLign = "Ligne 2";
-        	//station.setNorth(map.get(1).get(1));
-        	station.setNorthEast(map.get(16).get(13));
-        	//station.setEast(map.get(1).get(1));
-        	station.setSouthEast(map.get(17).get(17));
-        	//station.setSouth(map.get(1).get(1));
-        	station.setSouthWest(map.get(9).get(17));
-        	//station.setWest(map.get(1).get(1));
-        	station.setNorthWest(map.get(11).get(9));
+        	station.addNeighborAtList(map.get(16).get(13));
+        	station.addNeighborAtList(map.get(17).get(17));
+        	station.addNeighborAtList(map.get(9).get(17));
+        	station.addNeighborAtList(map.get(11).get(9));
         	
         	station = map.get(13).get(24);
         	station.nomStat = "Trocadéro";
         	station.nomLign = "Ligne 1";
-        	//station.setNorth(map.get(1).get(1));
-        	station.setNorthEast(map.get(19).get(22));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(19).get(22));
         	
         	station = map.get(16).get(13);
         	station.nomStat = "Pyramides";
         	station.nomLign = "Ligne 4";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(21).get(13));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	station.setSouthWest(map.get(13).get(14));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(21).get(13));
+        	station.addNeighborAtList(map.get(13).get(14));
         	
         	station = map.get(17).get(17);
         	station.nomStat = "Alexandre Dumas";
         	station.nomLign = "Ligne 2";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(21).get(17));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	station.setNorthWest(map.get(13).get(14));
+        	station.addNeighborAtList(map.get(21).get(17));
+        	station.addNeighborAtList(map.get(13).get(14));
         	
         	station = map.get(19).get(22);
         	station.nomStat = "Issy";
         	station.nomLign = "Ligne 1";
-        	//station.setNorth(map.get(1).get(1));
-        	station.setNorthEast(map.get(21).get(17));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	station.setSouthWest(map.get(13).get(24));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(21).get(17));
+        	station.addNeighborAtList(map.get(13).get(24));
         
         	station = map.get(21).get(4);
         	station.nomStat = "Brochant";
         	station.nomLign = "Ligne 1";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	station.setSouth(map.get(21).get(19));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(21).get(19));
         	
         	station = map.get(21).get(9);
         	station.nomStat = "Pyrénées";
         	station.nomLign = "Ligne 3";
-        	station.setNorth(map.get(21).get(4));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(31).get(9));
-        	//station.setSouthEast(map.get(1).get(1));
-        	station.setSouth(map.get(21).get(13));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(11).get(9));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(21).get(4));
+        	station.addNeighborAtList(map.get(31).get(9));
+        	station.addNeighborAtList(map.get(21).get(13));
+        	station.addNeighborAtList(map.get(11).get(9));
         	
         	station = map.get(21).get(13);
         	station.nomStat = "Cadet";
         	station.nomLign = "Ligne 1";
-        	station.setNorth(map.get(21).get(9));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(28).get(13));
-        	//station.setSouthEast(map.get(1).get(1));
-        	station.setSouth(map.get(21).get(17));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(16).get(13));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(21).get(9));
+        	station.addNeighborAtList(map.get(28).get(13));
+        	station.addNeighborAtList(map.get(21).get(17));
+        	station.addNeighborAtList(map.get(16).get(13));
         	
         	station = map.get(21).get(17);
         	station.nomStat = "Billancourt";
         	station.nomLign = "Ligne 2";
-        	station.setNorth(map.get(21).get(13));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(24).get(17));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	station.setSouthWest(map.get(19).get(22));
-        	station.setWest(map.get(17).get(17));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(21).get(13));
+        	station.addNeighborAtList(map.get(24).get(17));
+        	station.addNeighborAtList(map.get(19).get(22));
+        	station.addNeighborAtList(map.get(17).get(17));
         	
         	station = map.get(24).get(17);
         	station.nomStat = "Couronnes";
         	station.nomLign = "Ligne 2";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	station.setSouthEast(map.get(28).get(19));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(21).get(17));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(28).get(19));
+        	station.addNeighborAtList(map.get(21).get(17));
         	
         	station = map.get(28).get(13);
         	station.nomStat = "Saint-Ouen";
         	station.nomLign = "Ligne 4";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	station.setEast(map.get(34).get(13));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(21).get(13));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(34).get(13));
+        	station.addNeighborAtList(map.get(21).get(13));
         	
         	station = map.get(28).get(19);
         	station.nomStat = "La Chapelle";
         	station.nomLign = "Ligne 2";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	station.setSouthEast(map.get(32).get(21));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	station.setNorthWest(map.get(24).get(17));
+        	station.addNeighborAtList(map.get(32).get(21));
+        	station.addNeighborAtList(map.get(24).get(17));
         	
         	station = map.get(31).get(9);
         	station.nomStat = "Place des Fétes";
         	station.nomLign = "Ligne 3";
-        	//station.setNorth(map.get(1).get(1));
-        	station.setNorthEast(map.get(34).get(6));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	station.setWest(map.get(21).get(9));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(34).get(6));
+        	station.addNeighborAtList(map.get(21).get(9));
         	
         	station = map.get(32).get(21);
         	station.nomStat = "Opéra";
         	station.nomLign = "Ligne 2";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	station.setNorthWest(map.get(28).get(19));
+        	station.addNeighborAtList(map.get(28).get(19));
         	
         	station = map.get(34).get(6);
         	station.nomStat = "Mairie des Lilas";
         	station.nomLign = "Ligne 3";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	station.setSouthWest(map.get(31).get(9));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(31).get(9));
+
         	
         	station = map.get(34).get(13);
         	station.nomStat = "Clichy";
         	station.nomLign = "Ligne 4";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(31).get(9));
-        	station.setWest(map.get(28).get(13));
-        	//station.setNorthWest(map.get(1).get(1));
-        	
-        	//station = map.get(1).get(1);
-        	//station.nomStat = "Nom";
-        	//station.setNorth(map.get(1).get(1));
-        	//station.setNorthEast(map.get(1).get(1));
-        	//station.setEast(map.get(1).get(1));
-        	//station.setSouthEast(map.get(1).get(1));
-        	//station.setSouth(map.get(1).get(1));
-        	//station.setSouthWest(map.get(1).get(1));
-        	//station.setWest(map.get(1).get(1));
-        	//station.setNorthWest(map.get(1).get(1));
+        	station.addNeighborAtList(map.get(28).get(13));
+
             
         }
          
         
         public ArrayList<ArrayList<Station>> getNodes() {
                 return map;
-        }
-        public void setObstical(int x, int y, boolean isObstical) {
-                map.get(x).get(y).setObstical(isObstical);
         }
 
         public Station getNode(int x, int y) {
