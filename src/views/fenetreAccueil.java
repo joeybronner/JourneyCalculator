@@ -20,6 +20,7 @@ import java.util.*;
 
 public class fenetreAccueil extends JFrame implements ActionListener {
 
+    public static HashMap<String, Color> couleurs = new HashMap<String, Color>();
     static Console log = new Console();
     static AStar pathFinder;
     static Compteur chrono = new Compteur();
@@ -51,7 +52,6 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static JRadioButton rapide, changement;
     private static JCheckBox metro, tram, rer, all;
     private static ButtonGroup groupBoutRadio;
-    public static HashMap<String, Color> couleurs = new HashMap<String, Color>();
 
     /**
      * Build the main frame interface
@@ -193,11 +193,15 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         panelItineraire.setBackground(new Color(255, 236, 139));
         panelItineraire.setLayout(new BorderLayout());
 
-        String[] selections = {"Ici, le détail de l'itinéraire", "Ici, le détail de l'itinéraire", "Ici, le détail de l'itinéraire", "Ici, le détail de l'itinéraire"};
-        JList list = new JList(selections);
-        list.setSelectedIndex(1);
-        list.isDisplayable();
-        panelItineraire.add(new JScrollPane(list));
+        String[] selections = {};
+        JList listStations = new JList(selections);
+        JList listLignes = new JList(selections);
+        JList listDurees = new JList(selections);
+        listStations.setSelectedIndex(1);
+        listStations.isDisplayable();
+        panelItineraire.add(new JScrollPane(listStations), BorderLayout.CENTER);
+        panelItineraire.add(new JScrollPane(listLignes), BorderLayout.WEST);
+        panelItineraire.add(new JScrollPane(listDurees), BorderLayout.EAST);
 
 
         // ---------------- PANEL DU BAS ---------------- //
@@ -220,6 +224,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
     /**
      * Actions handling
+     *
      * @param e
      */
     public void actionPerformed(ActionEvent e) {
@@ -248,13 +253,21 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 pathFinder.printPath();
                 pathFinder.printItineraire();
                 ArrayList<Station> itineraire = pathFinder.getItineraire();
-                String[] text = new String[itineraire.size()];
-                for (int i = 0; i < itineraire.size(); i++)
-                    text[i] = itineraire.get(i).getNomStat() + " [" + itineraire.get(i).getNomLign() + "]";
-                JList list = new JList(text);
-                list.setCellRenderer(new ColorCellRender());
+                String[] textS = new String[itineraire.size()];
+                String[] textL = new String[itineraire.size()];
+                String[] textD = new String[itineraire.size()];
+                for (int i = 0; i < itineraire.size(); i++) {
+                    textS[i] = itineraire.get(i).getNomStat();
+                    textL[i] = itineraire.get(i).getNomLign();
+                }
+                JList stations = new JList(textS);
+                JList lignes = new JList(textL);
+                JList duree = new JList(textD);
+                lignes.setCellRenderer(new ColorCellRender());
                 panelItineraire.removeAll();
-                panelItineraire.add(new JScrollPane(list));
+                panelItineraire.add(new JScrollPane(stations), BorderLayout.CENTER);
+                panelItineraire.add(new JScrollPane(lignes), BorderLayout.WEST);
+                panelItineraire.add(new JScrollPane(duree), BorderLayout.EAST);
                 panelItineraire.revalidate();
                 panelItineraire.repaint();
             } else if (changement.isSelected()) {
@@ -266,13 +279,22 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 pathFinder.printPath();
                 pathFinder.printItineraire();
                 ArrayList<Station> itineraire = pathFinder.getItineraire();
-                String[] text = new String[itineraire.size()];
-                for (int i = 0; i < itineraire.size(); i++)
-                    text[i] = itineraire.get(i).getNomStat() + " [" + itineraire.get(i).getNomLign() + "]";
-                JList list = new JList(text);
-                list.setCellRenderer(new ColorCellRender());
+                String[] textS = new String[itineraire.size()];
+                String[] textL = new String[itineraire.size()];
+                String[] textD = new String[itineraire.size()];
+                for (int i = 0; i < itineraire.size(); i++) {
+                    textS[i] = itineraire.get(i).getNomStat();
+                    textL[i] = itineraire.get(i).getNomLign();
+//                    couleurs.put(itineraire.get(i).getNomStat(), itineraire.get(i))
+                }
+                JList stations = new JList(textS);
+                JList lignes = new JList(textL);
+                JList duree = new JList(textD);
+                lignes.setCellRenderer(new ColorCellRender());
                 panelItineraire.removeAll();
-                panelItineraire.add(new JScrollPane(list));
+                panelItineraire.add(new JScrollPane(stations), BorderLayout.CENTER);
+                panelItineraire.add(new JScrollPane(lignes), BorderLayout.WEST);
+                panelItineraire.add(new JScrollPane(duree), BorderLayout.EAST);
                 panelItineraire.revalidate();
                 panelItineraire.repaint();
             }
@@ -354,8 +376,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         } catch (Exception err) {
         }
     }
-    private void MAJVoisinsBDD()
-    {
+
+    private void MAJVoisinsBDD() {
         try {
             Scrapper.MAJNeighbors();
         } catch (Exception err) {
@@ -363,7 +385,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     }
 
     /**
-     *        Call to the database and update stops
+     * Call to the database and update stops
      */
     private void MAJStopsBDD() {
         try {
@@ -381,6 +403,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         } catch (Exception err) {
         }
     }
+
     private void MAJTypeBDD() {
         try {
             Scrapper.MAJType();
@@ -423,7 +446,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         type = new JMenuItem("type.csv...");
         type.addActionListener(this);
         maj.add(type);
-        
+
         voisins = new JMenuItem("neighbors.csv...");
         voisins.addActionListener(this);
         maj.add(voisins);
@@ -442,13 +465,13 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             Random rand = new Random();
-            if (couleurs.get(value.toString().split("\\[")[1].split("]")[0]) == null) {
+            if (couleurs.get(value.toString()) == null) {
                 float r = rand.nextFloat();
                 float g = rand.nextFloat();
                 float b = rand.nextFloat();
-                couleurs.put(value.toString().split("\\[")[1].split("]")[0], new Color(r, g, b));
+                couleurs.put(value.toString(), new Color(r, g, b).brighter());
             }
-            c.setBackground(couleurs.get(value.toString().split("\\[")[1].split("]")[0]));
+            c.setBackground(couleurs.get(value.toString()));
             return c;
         }
     }
