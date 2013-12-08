@@ -1,22 +1,24 @@
 package aStar;
 
 import aStar.utils.Console;
+import connect.DatabaseConnect;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AreaMap {
 
+    HashMap<Integer, HashMap<Integer, Station>> maMap = new HashMap<Integer, HashMap<Integer, Station>>();
+    HashMap<Integer, Station> maMapByIndex = new HashMap<Integer, Station>();
     private int mapWith;
     private int mapHeight;
     private ArrayList<ArrayList<Station>> map;
-    HashMap<Integer, HashMap<Integer, Station>> maMap = new HashMap<Integer, HashMap<Integer, Station>>();
-
     private int startLocationX = 0;
     private int startLocationY = 0;
     private int goalLocationX = 0;
     private int goalLocationY = 0;
-
     private Console log = new Console();
 
     public AreaMap(int mapWith, int mapHeight) {
@@ -29,17 +31,50 @@ public class AreaMap {
         log.ecrireConsole("\tStations ajoutées");
     }
 
+    /**
+     * Create the map of stations
+     */
     private void createMap() {
-        Station station;
+        DatabaseConnect connexion = new DatabaseConnect();
+        connexion.Connexion();
+        Station sta;
+        maMap.clear();
 
-        map = new ArrayList<ArrayList<Station>>();
-        for (int x = 0; x < mapWith; x++) {
-            map.add(new ArrayList<Station>());
-            for (int y = 0; y < mapHeight; y++) {
-                station = new Station(x, y, "Station_" + y);
-                map.get(x).add(station);
+        ResultSet stations = connexion.Rechercher("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) ORDER BY stop_name");
+
+        try {
+            HashMap<Integer, Station> hm;
+            while (stations.next()) {
+                sta = new Station(Integer.parseInt(stations.getString("stop_x")), Integer.parseInt(stations.getString("stop_y")), stations.getString("stop_name"));
+                maMapByIndex.put(Integer.parseInt(stations.getString("parent_id")), sta);
+                if (maMap.get(sta.getX()) == null) {
+                    hm = new HashMap<Integer, Station>();
+
+                } else {
+                    hm = maMap.get(sta.getX());
+                }
+                hm.put(sta.getY(), sta);
+                maMap.put(sta.getX(), hm);
             }
+            ResultSet voisins = connexion.Rechercher("SELECT DISTINCT `tb_stopsneighbors` . * , `tb_stopscoordon`.`stop_x` , `tb_stopscoordon`.`stop_y` FROM tb_stopsneighbors LEFT JOIN `journey`.`tb_stopscoordon` ON `tb_stopsneighbors`.`stop_id` = `tb_stopscoordon`.`parent_id` ORDER BY stop_id");
+
+            Station s;
+            while (voisins.next()) {
+                if (voisins.getString("stop_x") != null && voisins.getString("stop_y") != null) {
+                    System.out.println(voisins.getString("stop_y"));
+                    hm = maMap.get(Integer.parseInt(voisins.getString("stop_x")));
+                    if (hm != null && hm.get(Integer.parseInt(voisins.getString("stop_y"))) != null) {
+                        s = hm.get(Integer.parseInt(voisins.getString("stop_y")));
+                        s.addNeighborAtList(maMapByIndex.get(Integer.parseInt(voisins.getString("stop_neighbor"))));
+
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        connexion.Deconnexion();
+
     }
 
     /**
@@ -47,31 +82,9 @@ public class AreaMap {
      */
     private void registerEdges() {
 
-        // Ici, va falloir, soit :
-        //     - Aller chercher dans la base de données
-        //     - Ouvrir et lire les fichiers csv ou txt
-
 
         HashMap<Integer, Station> colQuatre = new HashMap<Integer, Station>();
-//            for(Station s: stations){
-//                if(map.get(s.getX()) == null)
-//                    map.put(s.getX(), new HashMap<s.getY(), s>);
-//                else {
-//                    HashMap<Integer, Station> hs = map.get(s.getX());
-//                    hs.put(s.getY(), s);
-//                    map.put(s.getX(), hs)
-//
-//                }
-//            }
-        
-        
-        // boucle de la base --> parcours de toutes les stations
-        
-        
-        
-        
-        // fin de la boucle
-        
+
         Station station1 = new Station(4, 9, "Hotel de ville");
         station1.nomLign = "Ligne 3";
         colQuatre.put(9, station1);
@@ -182,9 +195,7 @@ public class AreaMap {
         station21.nomLign = "Ligne 4";
         col34.put(13, station21);
         maMap.put(34, col34);
-        
-        
-        
+
 
         station1.addNeighborAtList(station5);
         station2.addNeighborAtList(station3);
@@ -233,7 +244,6 @@ public class AreaMap {
 
 
     }
-
 
     public ArrayList<ArrayList<Station>> getNodes() {
         return map;
