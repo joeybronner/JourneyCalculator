@@ -301,14 +301,15 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         } else if (source == refresh) {
             comboBoxDepart.setEnabled(true);
             comboBoxArrivee.setEnabled(true);
+            comboBoxDepart.removeAllItems();
+            comboBoxArrivee.removeAllItems();
+            Scrapper s = new Scrapper();
 
 
             if (all.isSelected()) {
                 System.out.println("Requete de chargement de tous les arrets confondus");
-                Scrapper s = new Scrapper();
                 try {
-                    comboBoxDepart.removeAllItems();
-                    comboBoxArrivee.removeAllItems();
+
                     s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) ORDER BY stop_name");
 
                     Collection<Scrapper.Station> a = s.getStations().values();
@@ -327,43 +328,85 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                     e1.printStackTrace();
                 }
 
-            }
+            } else {
 
-            if (tram.isSelected() && !metro.isSelected() && !rer.isSelected() && !all.isSelected()) {
-                System.out.println("Requete de chargement de tous les arrêts de TRAM");
-                Scrapper s = new Scrapper();
-                try {
-                    comboBoxDepart.removeAllItems();
-                    comboBoxArrivee.removeAllItems();
-                    //s.readStations("SELECT st.stop_id, stop_name, stop_type FROM tb_stops st JOIN tb_stopstype ty ON (st.parent_station = ty.parent_id) WHERE stop_type='tram' ORDER BY stop_type, stop_name");
-                    s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='tram' ORDER BY stop_name");
+                if (tram.isSelected()) {
+                    System.out.println("Requete de chargement de tous les arrêts de TRAM");
+                    try {
 
-                    Collection<Scrapper.Station> a = s.getStations().values();
-                    Iterator it = a.iterator();
-                    while (it.hasNext()) {
-                        Object ar = it.next();
-                        comboBoxDepart.addItem(ar.toString());
-                        comboBoxArrivee.addItem(ar.toString());
+
+                        //s.readStations("SELECT st.stop_id, stop_name, stop_type FROM tb_stops st JOIN tb_stopstype ty ON (st.parent_station = ty.parent_id) WHERE stop_type='tram' ORDER BY stop_type, stop_name");
+                        s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='tram' ORDER BY stop_name");
+
+                        Collection<Scrapper.Station> a = s.getStations().values();
+                        Iterator it = a.iterator();
+                        while (it.hasNext()) {
+                            Object ar = it.next();
+                            comboBoxDepart.addItem(ar.toString());
+                            comboBoxArrivee.addItem(ar.toString());
+                        }
+
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
                     }
+                }
 
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                if (metro.isSelected()) {
+                    System.out.println("Requete de chargement de tous les arrêts de METRO");
+
+                    try {
+
+
+                        //s.readStations("SELECT st.stop_id, stop_name, stop_type FROM tb_stops st JOIN tb_stopstype ty ON (st.parent_station = ty.parent_id) WHERE stop_type='tram' ORDER BY stop_type, stop_name");
+                        s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='metro' ORDER BY stop_name");
+
+                        Collection<Scrapper.Station> a = s.getStations().values();
+                        Iterator it = a.iterator();
+                        while (it.hasNext()) {
+                            Object ar = it.next();
+                            comboBoxDepart.addItem(ar.toString());
+                            comboBoxArrivee.addItem(ar.toString());
+                        }
+
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                }
+
+                if (rer.isSelected()) {
+                    System.out.println("Requete de chargement de tous les arrêts de RER");
+                    try {
+
+
+                        //s.readStations("SELECT st.stop_id, stop_name, stop_type FROM tb_stops st JOIN tb_stopstype ty ON (st.parent_station = ty.parent_id) WHERE stop_type='tram' ORDER BY stop_type, stop_name");
+                        s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='rer' ORDER BY stop_name");
+
+                        Collection<Scrapper.Station> a = s.getStations().values();
+                        Iterator it = a.iterator();
+                        while (it.hasNext()) {
+                            Object ar = it.next();
+                            comboBoxDepart.addItem(ar.toString());
+                            comboBoxArrivee.addItem(ar.toString());
+                        }
+
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
             }
-
-            if (metro.isSelected()) {
-                System.out.println("Requete de chargement de tous les arrêts de METRO");
-            }
-
-            if (rer.isSelected()) {
-                System.out.println("Requete de chargement de tous les arrêts de RER");
-            }
         }
-
 
     }
 
