@@ -1,13 +1,11 @@
 package aStar;
 
 import aStar.heuristics.AStarHeuristic;
-import aStar.utils.Console;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class AStar {
-    Console log = new Console();
     private AreaMap map;
     private AStarHeuristic heuristic;
     private ArrayList<Station> closedList;
@@ -33,7 +31,6 @@ public class AStar {
     }
 
     /**
-     *
      * @param startX
      * @param startY
      * @param goalX
@@ -102,7 +99,6 @@ public class AStar {
     }
 
     /**
-     *
      * @param startX
      * @param startY
      * @param goalX
@@ -306,7 +302,6 @@ public class AStar {
     }
 
     /**
-     *
      * @return path
      */
     public ArrayList<Station> getItineraire() {
@@ -324,7 +319,6 @@ public class AStar {
     }
 
     /**
-     *
      * @param node
      * @return the reconstructed path
      */

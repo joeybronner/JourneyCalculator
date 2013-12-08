@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Station implements Comparable<Station> {
     // Une station
-    AreaMap map;
     ArrayList<Station> neighborList;
     boolean visited;
     int distanceFromStart;
@@ -37,16 +36,6 @@ public class Station implements Comparable<Station> {
         this.nomStat = nom_stat;
     }
 
-//        Station (int x, int y, boolean visited, int distanceFromStart, boolean isObstical, boolean isStart, boolean isDestination) {
-//                neighborList = new ArrayList<Station>();
-//                this.x = x;
-//                this.y = y;
-//                this.visited = visited;
-//                this.distanceFromStart = distanceFromStart;
-//                this.isStart = isStart;
-//                this.isDestination = isDestination;
-//        }
-//       
 
     /**
      * Neighbors getter

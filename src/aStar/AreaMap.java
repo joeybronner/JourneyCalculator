@@ -5,7 +5,6 @@ import connect.DatabaseConnect;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AreaMap {
@@ -14,7 +13,6 @@ public class AreaMap {
     HashMap<Integer, Station> maMapByIndex = new HashMap<Integer, Station>();
     private int mapWith;
     private int mapHeight;
-    private ArrayList<ArrayList<Station>> map;
     private int startLocationX = 0;
     private int startLocationY = 0;
     private int goalLocationX = 0;
@@ -245,12 +243,8 @@ public class AreaMap {
 
     }
 
-    public ArrayList<ArrayList<Station>> getNodes() {
-        return map;
-    }
 
     public Station getNode(int x, int y) {
-//                return map.get(x).get(y);
         return maMap.get(x).get(y);
     }
 
@@ -275,7 +269,6 @@ public class AreaMap {
     }
 
     public Station getStartNode() {
-//                return map.get(startLocationX).get(startLocationY);
         return maMap.get(startLocationX).get(startLocationY);
     }
 
@@ -288,7 +281,6 @@ public class AreaMap {
     }
 
     public Station getGoalLocation() {
-//                return map.get(goalLocationX).get(goalLocationY);
         return maMap.get(goalLocationX).get(goalLocationY);
     }
 

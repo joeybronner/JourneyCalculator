@@ -1,5 +1,7 @@
 package aStar.utils;
 
+import connect.DatabaseConnect;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.sql.ResultSet;
@@ -8,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import connect.DatabaseConnect;
 
 public class Scrapper
 {
@@ -218,13 +218,6 @@ public class Scrapper
     	connexion.Deconnexion();
     }
 
-    public static void main(String[] args) throws SQLException {
-//        try {
-//            readStops();
-//        } catch (IOException e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        }
-    }
 
     static class Line {
         String nom; // Numéro ( départ / départ - arrivée - arrivée )
