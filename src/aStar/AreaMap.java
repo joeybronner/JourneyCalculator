@@ -63,6 +63,15 @@ public class AreaMap {
 //
 //                }
 //            }
+        
+        
+        // boucle de la base --> parcours de toutes les stations
+        
+        
+        
+        
+        // fin de la boucle
+        
         Station station1 = new Station(4, 9, "Hotel de ville");
         station1.nomLign = "Ligne 3";
         colQuatre.put(9, station1);
@@ -173,6 +182,9 @@ public class AreaMap {
         station21.nomLign = "Ligne 4";
         col34.put(13, station21);
         maMap.put(34, col34);
+        
+        
+        
 
         station1.addNeighborAtList(station5);
         station2.addNeighborAtList(station3);

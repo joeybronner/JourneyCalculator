@@ -309,7 +309,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 try {
                     comboBoxDepart.removeAllItems();
                     comboBoxArrivee.removeAllItems();
-                    s.readStations("SELECT stop_name, parent_id, stop_type FROM tb_stopstype JOIN tb_stops ON (tb_stopstype.parent_id = tb_stops.parent_station) ORDER BY stop_name DESC");
+                    s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) ORDER BY stop_name");
 
                     Collection<Scrapper.Station> a = s.getStations().values();
                     Iterator it = a.iterator();
@@ -336,7 +336,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                     comboBoxDepart.removeAllItems();
                     comboBoxArrivee.removeAllItems();
                     //s.readStations("SELECT st.stop_id, stop_name, stop_type FROM tb_stops st JOIN tb_stopstype ty ON (st.parent_station = ty.parent_id) WHERE stop_type='tram' ORDER BY stop_type, stop_name");
-                    s.readStations("SELECT stop_name, parent_id, stop_type FROM tb_stopstype JOIN tb_stops ON (tb_stopstype.parent_id = tb_stops.parent_station) WHERE stop_type='tram' ORDER BY stop_name DESC");
+                    s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='tram' ORDER BY stop_name");
 
                     Collection<Scrapper.Station> a = s.getStations().values();
                     Iterator it = a.iterator();
