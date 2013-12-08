@@ -82,7 +82,7 @@ public class Scrapper
         while ((line = br.readLine()) != null)
         {
             String array[] = pattern.split(line, 0);
-            if (array.length == 8)
+            if (array.length == 9)
             {     	
                 try {        
                 	
@@ -94,7 +94,8 @@ public class Scrapper
                 			         +  array[4] + ", "
                 			         +  array[5] + ", "
                 			         +  array[6] + ", "
-                			         +  array[7] + ")");
+                			         +  array[7] + ", '"
+                			         +  array[8] + "')");
                 	compteur++;  
                 }
                 catch (Exception err){} 
