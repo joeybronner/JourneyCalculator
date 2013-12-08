@@ -37,8 +37,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
      */
     private static int mapLarg = 50;
     private static int mapHaut = 50;
-    private static int depaX = 19;
-    private static int depaY = 22;
+    private static int depaX = 4;
+    private static int depaY = 17;
     private static int destX = 21;
     private static int destY = 17;
     private static int typeItineraire = 99;

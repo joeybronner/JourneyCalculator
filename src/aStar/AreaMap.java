@@ -106,7 +106,7 @@ public class AreaMap {
         maMap.put(16, colSeize);
 
         Station station9 = new Station(17, 17, "Alexandre Dumas");
-        station8.nomLign = "Ligne 2";
+        station9.nomLign = "Ligne 2";
         HashMap<Integer, Station> colDixSept = new HashMap<Integer, Station>();
         colDixSept.put(17, station9);
         maMap.put(17, colDixSept);
