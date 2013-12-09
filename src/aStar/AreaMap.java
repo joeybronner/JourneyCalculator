@@ -3,6 +3,7 @@ package aStar;
 import aStar.utils.Console;
 import connect.DatabaseConnect;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -23,8 +24,6 @@ public class AreaMap {
 
         createMap();
         log.ecrireConsole("\tStations ajoutees");
-//        registerEdges();
-//        log.ecrireConsole("\tVoisins ajoutÃ©es");
     }
 
     /**
@@ -36,65 +35,70 @@ public class AreaMap {
         Station sta;
         maMap.clear();
 
-        //ResultSet stations = connexion.Rechercher("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) ORDER BY stop_name");
-        ResultSet stations = connexion.Rechercher("SELECT st.stop_id, stop_name, stop_x, stop_y, parent_id, stop_line, color_line FROM tb_stopsneighbors ne, tb_stops st, tb_stopscoordon co, tb_lines li WHERE ne.stop_id = st.stop_id AND st.parent_station = co.parent_id AND st.stop_line = li.id_line GROUP BY st.stop_id ORDER BY st.stop_name");
-        
-        int count=0;
+        ResultSet stations = connexion.Rechercher("SELECT `tb_stops`.`stop_id` , `tb_stops`.`stop_name` , `tb_stopscoordon`.`stop_x` , `tb_stopscoordon`.`stop_y` , `tb_stopscoordon`.`parent_id` , `tb_stops`.`stop_line` , `tb_lines`.`color_line` FROM tb_lines LEFT JOIN `journey`.`tb_stops` ON `tb_lines`.`id_line` = `tb_stops`.`stop_line` LEFT JOIN `journey`.`tb_stopscoordon` ON `tb_stops`.`parent_station` = `tb_stopscoordon`.`parent_id` ");
+
+        int count = 0;
         try {
             HashMap<Integer, Station> hm;
             while (stations.next()) {
-            	count++;
-                sta = new Station(Integer.parseInt(stations.getString("stop_id")), Integer.parseInt(stations.getString("stop_x")), Integer.parseInt(stations.getString("stop_y")), stations.getString("stop_name"), stations.getString("stop_line"), stations.getString("color_line"));
-                maMapByIndex.put(Integer.parseInt(stations.getString("stop_id")), sta);
-                if (maMap.get(sta.getX()) == null) {
-                    hm = new HashMap<Integer, Station>();
+                count++;
+                if (stations.getString("stop_id") != null && stations.getString("stop_x") != null) {
+                    sta = new Station(Integer.parseInt(stations.getString("stop_id")), Integer.parseInt(stations.getString("stop_x")), Integer.parseInt(stations.getString("stop_y")), stations.getString("stop_name"), stations.getString("stop_line"), stations.getString("color_line"));
 
-                } else {
-                    hm = maMap.get(sta.getX());
+                    maMapByIndex.put(Integer.parseInt(stations.getString("stop_id")), sta);
+
+
+                    if (maMap.get(sta.getX()) == null) {
+                        hm = new HashMap<Integer, Station>();
+
+                    } else {
+                        hm = maMap.get(sta.getX());
+                    }
+                    hm.put(sta.getY(), sta);
+                    maMap.put(sta.getX(), hm);
                 }
-                hm.put(sta.getY(), sta);
-                maMap.put(sta.getX(), hm);
             }
-            System.out.println("Nb de stations ajoutées : " + count);
-            
-            //ResultSet voisins = connexion.Rechercher("SELECT DISTINCT `tb_stopsneighbors` . * , `tb_stopscoordon`.`stop_x` , `tb_stopscoordon`.`stop_y` FROM tb_stopsneighbors LEFT JOIN `journey`.`tb_stopscoordon` ON `tb_stopsneighbors`.`stop_id` = `tb_stopscoordon`.`parent_id` ORDER BY stop_id");
-            
-            
-            
-//            Station s;
-//            
-//            
-//            hm = maMap.get(5492); // x de la station qui recoit le voisin
-//            s = hm.get(2252); // y de la station qui recoit le voisin
-//            s.addNeighborAtList(maMapByIndex.get(1985)); // id de la station voisine
-            
-            
-            
+            System.out.println("Nb de stations ajoutï¿½es : " + count);
+
+
             ResultSet voisins = connexion.Rechercher("SELECT * FROM tb_stopsneighbors ne, tb_stops st, tb_stopscoordon co WHERE ne.stop_id = st.stop_id AND st.parent_station = co.parent_id ORDER BY st.stop_id");
-            
-            count=0;
+
+            count = 0;
             Station s;
             while (voisins.next()) {
                 if (voisins.getString("stop_x") != null && voisins.getString("stop_y") != null) {
-                    //System.out.println(voisins.getString("stop_name"));
                     hm = maMap.get(Integer.parseInt(voisins.getString("stop_x")));
                     if (hm != null && hm.get(Integer.parseInt(voisins.getString("stop_y"))) != null) {
                         s = hm.get(Integer.parseInt(voisins.getString("stop_y")));
                         s.addNeighborAtList(maMapByIndex.get(Integer.parseInt(voisins.getString("stop_neighbor"))));
+                        if (maMapByIndex.get(Integer.parseInt(voisins.getString("stop_neighbor"))) != null)
+                            maMapByIndex.get(Integer.parseInt(voisins.getString("stop_neighbor"))).addNeighborAtList(s);
                         count++;
+
+
+                        if (maMapByIndex.get(Integer.parseInt(voisins.getString("stop_neighbor"))) == null) {
+                            PreparedStatement stmt = connexion.getCon().prepareStatement("SELECT * FROM tb_stops WHERE parent_station = ?");
+                            stmt.setInt(1, Integer.parseInt(voisins.getString("stop_neighbor")));
+                            ResultSet rs = stmt.executeQuery();
+                            while (rs.next()) {
+                                int tata = Integer.parseInt(voisins.getString("stop_neighbor"));
+                                s.addNeighborAtList(maMapByIndex.get(Integer.parseInt(rs.getString("stop_id"))));
+                                maMapByIndex.get(Integer.parseInt(rs.getString("stop_id"))).addNeighborAtList(s);
+                            }
+                        }
                     }
                 }
-                
+
             }
-            System.out.println("Nb de voisins ajoutés : " + count);
-            
-            
+            System.out.println("Nb de voisins ajoutï¿½s : " + count);
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         connexion.Deconnexion();
 
-        
+
     }
 
     /**
@@ -265,56 +269,31 @@ public class AreaMap {
 
     }
 
-
     public Station getNode(int x, int y) {
         return maMap.get(x).get(y);
     }
 
     public void setStartLocation(int ID) {
-    	DatabaseConnect connexion = new DatabaseConnect();
+        DatabaseConnect connexion = new DatabaseConnect();
         connexion.Connexion();
         ResultSet coordonnees = connexion.Rechercher("SELECT stop_x, stop_y from tb_stops st, tb_stopscoordon co where st.parent_station = co.parent_id and stop_id = " + ID);
         try {
-			while (coordonnees.next()) {
-				int x = Integer.parseInt(coordonnees.getString("stop_x"));
-			    int y = Integer.parseInt(coordonnees.getString("stop_y"));
-			    maMap.get(x).get(y).setStart(true);
-			    startLocationX = x;
-			    startLocationY = y;
-			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            while (coordonnees.next()) {
+                int x = Integer.parseInt(coordonnees.getString("stop_x"));
+                int y = Integer.parseInt(coordonnees.getString("stop_y"));
+                maMap.get(x).get(y).setStart(true);
+                startLocationX = x;
+                startLocationY = y;
+            }
+        } catch (NumberFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         connexion.Deconnexion();
-        System.out.println("Point de départ : X="+startLocationX+" ; Y="+startLocationY);
-       
-    }
-
-    public void setGoalLocation(int ID) {
-    	DatabaseConnect connexion = new DatabaseConnect();
-        connexion.Connexion();
-        ResultSet coordonnees = connexion.Rechercher("SELECT stop_x, stop_y from tb_stops st, tb_stopscoordon co where st.parent_station = co.parent_id and stop_id = " + ID);
-        try {
-			while (coordonnees.next()) {
-				int x = Integer.parseInt(coordonnees.getString("stop_x"));
-			    int y = Integer.parseInt(coordonnees.getString("stop_y"));
-			    maMap.get(x).get(y).setGoal(true);
-			    goalLocationX = x;
-			    goalLocationY = y;
-			}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        connexion.Deconnexion();
-        System.out.println("Point de destination : X="+goalLocationX+" ; Y="+goalLocationY);
+        System.out.println("Point de dï¿½part : X=" + startLocationX + " ; Y=" + startLocationY);
 
     }
 
@@ -342,14 +321,38 @@ public class AreaMap {
         return maMap.get(goalLocationX).get(goalLocationY);
     }
 
+    public void setGoalLocation(int ID) {
+        DatabaseConnect connexion = new DatabaseConnect();
+        connexion.Connexion();
+        ResultSet coordonnees = connexion.Rechercher("SELECT stop_x, stop_y from tb_stops st, tb_stopscoordon co where st.parent_station = co.parent_id and stop_id = " + ID);
+        try {
+            while (coordonnees.next()) {
+                int x = Integer.parseInt(coordonnees.getString("stop_x"));
+                int y = Integer.parseInt(coordonnees.getString("stop_y"));
+                maMap.get(x).get(y).setGoal(true);
+                goalLocationX = x;
+                goalLocationY = y;
+            }
+        } catch (NumberFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        connexion.Deconnexion();
+        System.out.println("Point de destination : X=" + goalLocationX + " ; Y=" + goalLocationY);
+
+    }
+
     public int getDistanceBetween(Station node1, Station node2) {
-    	System.out.println("Calcul de la distance entre : " + node1.nomStat + " et "+ node2.nomStat);
+        System.out.println("Calcul de la distance entre : " + node1.nomStat + " et " + node2.nomStat);
         //if the nodes are on top or next to each other, return 1
         if (node1.getX() == node2.getX() || node1.getY() == node2.getY()) {
-        	System.out.println(" Résultat : " + 1 * (mapHeight + mapWith));
+            System.out.println(" Rï¿½sultat : " + 1 * (mapHeight + mapWith));
             return 1 * (mapHeight + mapWith);
         } else { //if they are diagonal to each other return diagonal distance: sqrt(1^2+1^2)
-        	System.out.println(" Résultat : " + (int) 1.7 * (mapHeight + mapWith));
+            System.out.println(" Rï¿½sultat : " + (int) 1.7 * (mapHeight + mapWith));
             return (int) 1.7 * (mapHeight + mapWith);
         }
     }

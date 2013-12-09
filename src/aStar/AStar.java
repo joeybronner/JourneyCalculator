@@ -31,10 +31,8 @@ public class AStar {
     }
 
     /**
-     * @param startX
-     * @param startY
-     * @param goalX
-     * @param goalY
+     * @param startID
+     * @param goalID
      * @return the shortest path to the goal
      */
     public Path calcShortestPath(int startID, int goalID) {
@@ -48,7 +46,7 @@ public class AStar {
         openList.clear();
         openList.add(map.getStartNode());
         
-        System.out.println("Le point de d�part est : " + map.getStartNode().nomStat);
+        System.out.println("Le point de d�part est : " + map.getStartNode().nomStat);
 
         //while we haven't reached the goal yet
         while (openList.size() != 0) {
@@ -70,9 +68,7 @@ public class AStar {
                 boolean neighborIsBetter;
                 
                 System.out.println("La station " + current.nomStat + " a " + current.getNeighborList().size() + " voisins.");
-                for (Station test : current.getNeighborList()) {
-                	System.out.println(test.nomStat);
-                }
+
 
                 //if we have already searched this Node, don't bother and continue to the next one
                 if (closedList.contains(neighbor))
@@ -106,10 +102,8 @@ public class AStar {
     }
 
     /**
-     * @param startX
-     * @param startY
-     * @param goalX
-     * @param goalY
+     * @param startID
+     * @param goalID
      * @return the path witj the least of changes
      */
     public Path calcCoolestPath(int startID, int goalID) {
@@ -124,6 +118,7 @@ public class AStar {
         // On vide les différentes listes
         cheminList.clear();
         rechercheList.clear();
+
 
         // On crée la liste des point é ouvrir
         rechercheList.add(map.getStartNode());

@@ -9,8 +9,8 @@ import aStar.utils.Compteur;
 import aStar.utils.Console;
 import aStar.utils.Scrapper;
 import aStar.utils.Scrapper.Arret;
-import javax.swing.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -241,12 +241,12 @@ public class fenetreAccueil extends JFrame implements ActionListener {
 
             if (rapide.isSelected()) {
             	
-            	// Récupération de la station de départ
+            	// Rï¿½cupï¿½ration de la station de dï¿½part
             	String depart = comboBoxDepart.getSelectedItem().toString();
             	String strDep[]=depart.split("-");
             	depaID = Integer.parseInt(strDep[0].trim());
             	
-            	// Récupération de la station de destination
+            	// Rï¿½cupï¿½ration de la station de destination
             	String destination = comboBoxArrivee.getSelectedItem().toString();
             	String strArr[]=destination.split("-");
             	destID = Integer.parseInt(strArr[0].trim());
@@ -277,12 +277,12 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 panelItineraire.repaint();
             } else if (changement.isSelected()) {
             	
-            	// Récupération de la station de départ
+            	// Rï¿½cupï¿½ration de la station de dï¿½part
             	String depart = comboBoxDepart.getSelectedItem().toString();
             	String strDep[]=depart.split("-");
             	depaID = Integer.parseInt(strDep[0].trim());
             	
-            	// Récupération de la station de destination
+            	// Rï¿½cupï¿½ration de la station de destination
             	String destination = comboBoxArrivee.getSelectedItem().toString();
             	String strArr[]=destination.split("-");
             	destID = Integer.parseInt(strArr[0].trim());
