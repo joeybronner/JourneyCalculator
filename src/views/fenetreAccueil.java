@@ -8,16 +8,11 @@ import aStar.heuristics.ClosestHeuristic;
 import aStar.utils.Compteur;
 import aStar.utils.Console;
 import aStar.utils.Scrapper;
-
 import javax.swing.*;
-
-import connect.DatabaseConnect;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -108,7 +103,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         choix.add(titreModeTransport);
         metro = new JCheckBox("Metro");
         metro.setOpaque(false);
-        metro.setSelected(false);
+        metro.setSelected(true);
 
         tram = new JCheckBox("Tram");
         tram.setOpaque(false);
@@ -118,15 +113,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         rer.setOpaque(false);
         rer.setSelected(false);
 
-        all = new JCheckBox("All");
-        all.setOpaque(false);
-        all.setSelected(true);
-
 
         choix.add(metro);
         choix.add(rer);
         choix.add(tram);
-        choix.add(all);
 
 
         // -------------------------------------- //
@@ -323,31 +313,6 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             comboBoxArrivee.removeAllItems();
             Scrapper s = new Scrapper();
 
-
-            if (all.isSelected()) {
-                System.out.println("Requete de chargement de tous les arrets confondus");
-                try {
-
-                    s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id");
-
-                    Collection<Scrapper.Arret> a = s.getArrs().values();
-                    Iterator it = a.iterator();
-                    while (it.hasNext()) {
-                        Object ar = it.next();
-                        comboBoxDepart.addItem(ar.toString());
-                        comboBoxArrivee.addItem(ar.toString());
-                    }
-
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
-            } else {
-
                 if (tram.isSelected()) {
                     System.out.println("Requete de chargement de tous les arrêts de TRAM");
                     try {
@@ -414,7 +379,6 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                         e1.printStackTrace();
                     }
                 }
-            }
         }
 
     }
