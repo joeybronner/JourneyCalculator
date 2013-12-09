@@ -9,7 +9,6 @@ import aStar.utils.Compteur;
 import aStar.utils.Console;
 import aStar.utils.Scrapper;
 import aStar.utils.Scrapper.Arret;
-
 import javax.swing.*;
 
 import java.awt.*;
@@ -92,6 +91,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         setTitle("Metro Parisien"); //On donne un titre à l'application
         setSize(1000, 500); //On donne une taille à notre fenêtre
         setResizable(false); //On interdit la redimensionnement de la fenêtre
+        setIconImage(Toolkit.getDefaultToolkit().getImage("img/maps.png")); // Ajout d'un icone a la fenetre
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //On dit à l'application de se fermer lors du clic sur la croix
         setLayout(new BorderLayout());
 
@@ -101,6 +101,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // ---------------- PANEL DU HAUT ---------------- //
 
         panelPreferences = new JPanel();
+         
         panelPreferences.setBackground(new Color(238, 220, 130));
         panelPreferences.setLayout(new BorderLayout());
 
@@ -497,4 +498,5 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             return c;
         }
     }
+    
 }

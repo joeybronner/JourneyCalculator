@@ -22,7 +22,6 @@ public class Scrapper
     static String line;
     static Pattern pattern = Pattern.compile(";");
     static int compteur;
-    
     static int stop_id;
     static int stop_code;
 	static String stop_name;
