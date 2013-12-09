@@ -8,17 +8,25 @@ import aStar.heuristics.ClosestHeuristic;
 import aStar.utils.Compteur;
 import aStar.utils.Console;
 import aStar.utils.Scrapper;
+import aStar.utils.Scrapper.Arret;
+
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.*;
 
 public class fenetreAccueil extends JFrame implements ActionListener {
 
-    public static HashMap<String, Color> couleurs = new HashMap<String, Color>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3431503210816474071L;
+	public static HashMap<String, Color> couleurs = new HashMap<String, Color>();
     static Console log = new Console();
     static AStar pathFinder;
     static Compteur chrono = new Compteur();
@@ -40,10 +48,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static JMenu bdd, maj, infos;
     private static JMenuItem coord, lines, stops, develop, type, voisins;
     private static JPanel panelPreferences, panelItineraire, panelValider;
-    private static JComboBox comboBoxDepart, comboBoxArrivee;
+    private static JComboBox<Serializable> comboBoxDepart, comboBoxArrivee;
     private static JButton valider, refresh;
     private static JRadioButton rapide, changement;
-    private static JCheckBox metro, tram, rer, all;
+    private static JCheckBox metro, tram, rer;
     private static ButtonGroup groupBoutRadio;
 
     /**
@@ -72,8 +80,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         pathFinder = new AStar(map, heuristic);
         // --- FIN INITIALISATION --- //
 
-        // --- AFFICHAGE FENETRE ACCUEIL --- //
-        fenetreAccueil f = new fenetreAccueil();
+        new fenetreAccueil();
         log.ecrireConsole("Pret.");
 
     }
@@ -130,13 +137,13 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // -------------------------------------- //
 
         Dimension size = new Dimension(100, 20);
-        comboBoxDepart = new JComboBox();
+        comboBoxDepart = new JComboBox<Serializable>();
         comboBoxDepart.setOpaque(false);
         comboBoxDepart.addItem("Veuillez selectionner une station dans la liste");
         comboBoxDepart.setEnabled(false);
         comboBoxDepart.setPrototypeDisplayValue(size);
 
-        comboBoxArrivee = new JComboBox();
+        comboBoxArrivee = new JComboBox<Serializable>();
         comboBoxArrivee.setOpaque(false);
         comboBoxArrivee.addItem("Veuillez selectionner une station dans la liste");
         comboBoxArrivee.setEnabled(false);
@@ -182,9 +189,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         panelItineraire.setLayout(new BorderLayout());
 
         String[] selections = {};
-        JList listStations = new JList(selections);
-        JList listLignes = new JList(selections);
-        JList listDurees = new JList(selections);
+        JList<?> listStations = new JList<Object>(selections);
+        JList<?> listLignes = new JList<Object>(selections);
+        JList<?> listDurees = new JList<Object>(selections);
         listStations.setSelectedIndex(1);
         listStations.isDisplayable();
         panelItineraire.add(new JScrollPane(listStations), BorderLayout.CENTER);
@@ -258,9 +265,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                     textS[i] = itineraire.get(i).getNomStat();
                     textL[i] = itineraire.get(i).getNomLign();
                 }
-                JList stations = new JList(textS);
-                JList lignes = new JList(textL);
-                JList duree = new JList(textD);
+                JList<?> stations = new JList<Object>(textS);
+                JList<?> lignes = new JList<Object>(textL);
+                JList<?> duree = new JList<Object>(textD);
                 lignes.setCellRenderer(new ColorCellRender());
                 panelItineraire.removeAll();
                 panelItineraire.add(new JScrollPane(stations), BorderLayout.CENTER);
@@ -295,9 +302,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                     textL[i] = itineraire.get(i).getNomLign();
 //                    couleurs.put(itineraire.get(i).getNomStat(), itineraire.get(i))
                 }
-                JList stations = new JList(textS);
-                JList lignes = new JList(textL);
-                JList duree = new JList(textD);
+                JList<?> stations = new JList<Object>(textS);
+                JList<?> lignes = new JList<Object>(textL);
+                JList<?> duree = new JList<Object>(textD);
                 lignes.setCellRenderer(new ColorCellRender());
                 panelItineraire.removeAll();
                 panelItineraire.add(new JScrollPane(stations), BorderLayout.CENTER);
@@ -311,15 +318,14 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             comboBoxArrivee.setEnabled(true);
             comboBoxDepart.removeAllItems();
             comboBoxArrivee.removeAllItems();
-            Scrapper s = new Scrapper();
 
                 if (tram.isSelected()) {
                     System.out.println("Requete de chargement de tous les arrêts de TRAM");
                     try {
-                        s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='tram'");
+                        Scrapper.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='tram'");
 
-                        Collection<Scrapper.Arret> a = s.getArrs().values();
-                        Iterator it = a.iterator();
+                        Collection<Scrapper.Arret> a = Scrapper.getArrs().values();
+                        Iterator<Arret> it = a.iterator();
                         while (it.hasNext()) {
                             Object ar = it.next();
                             comboBoxDepart.addItem(ar.toString());
@@ -327,10 +333,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                         }
 
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
@@ -339,10 +343,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                     System.out.println("Requete de chargement de tous les arrêts de METRO");
 
                     try {
-                        s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='metro'");
+                        Scrapper.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='metro'");
 
-                        Collection<Scrapper.Arret> a = s.getArrs().values();
-                        Iterator it = a.iterator();
+                        Collection<Scrapper.Arret> a = Scrapper.getArrs().values();
+                        Iterator<Arret> it = a.iterator();
                         while (it.hasNext()) {
                             Object ar = it.next();
                             comboBoxDepart.addItem(ar.toString());
@@ -350,10 +354,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                         }
 
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
@@ -361,10 +363,10 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 if (rer.isSelected()) {
                     System.out.println("Requete de chargement de tous les arrêts de RER");
                     try {
-                        s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='rer'");
+                        Scrapper.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='rer'");
 
-                        Collection<Scrapper.Arret> a = s.getArrs().values();
-                        Iterator it = a.iterator();
+                        Collection<Scrapper.Arret> a = Scrapper.getArrs().values();
+                        Iterator<Arret> it = a.iterator();
                         while (it.hasNext()) {
                             Object ar = it.next();
                             comboBoxDepart.addItem(ar.toString());
@@ -372,10 +374,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                         }
 
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     } catch (SQLException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
@@ -478,7 +478,12 @@ public class fenetreAccueil extends JFrame implements ActionListener {
      * Custom Cell render for the results displaying
      */
     private static class ColorCellRender extends DefaultListCellRenderer {
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -6224287802287766961L;
+
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                        
             Random rand = new Random();
