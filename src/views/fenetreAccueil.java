@@ -101,8 +101,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // ---------------- PANEL DU HAUT ---------------- //
 
         panelPreferences = new JPanel();
-         
-        panelPreferences.setBackground(new Color(238, 220, 130));
+        panelPreferences.setBackground(new Color(149, 179, 215));
         panelPreferences.setLayout(new BorderLayout());
 
         JPanel choix = new JPanel();
@@ -186,7 +185,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // ---------------- PANEL DU CENTRE ---------------- //
 
         panelItineraire = new JPanel();
-        panelItineraire.setBackground(new Color(255, 236, 139));
+        panelItineraire.setBackground(new Color(149, 179, 215));
         panelItineraire.setLayout(new BorderLayout());
 
         String[] selections = {};
@@ -203,7 +202,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // ---------------- PANEL DU BAS ---------------- //
 
         panelValider = new JPanel();
-        panelValider.setBackground(new Color(238, 220, 130));
+        panelValider.setBackground(new Color(149, 179, 215));
         valider = new JButton("Calculer l'itinéraire");
         valider.addActionListener(this);
         panelValider.add(valider, BorderLayout.CENTER);
@@ -435,7 +434,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
         // ------------------------------- MENU BAR -------------------------------
         // --- Barre principale
         barreMenu = new JMenuBar();
-        barreMenu.setBackground(new Color(205, 190, 112));
+        //barreMenu.setBackground(new Color(205, 190, 112));
         setJMenuBar(barreMenu);
 
         // --- Menus
