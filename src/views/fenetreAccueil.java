@@ -34,12 +34,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
      * @param goalX         Point de destination
      * @param goalY         Point de destination
      */
-    private static int mapLarg = 50;
-    private static int mapHaut = 50;
-    private static int depaX = 4;
-    private static int depaY = 17;
-    private static int destX = 21;
-    private static int destY = 17;
+
+    private static int depaID = 2448;
+    private static int destID = 1985;
     private static JMenuBar barreMenu;
     private static JMenu bdd, maj, infos;
     private static JMenuItem coord, lines, stops, develop, type, voisins;
@@ -67,7 +64,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     public static void main(String[] args) throws IOException {
         // --- INITIALISATION --- //
         log.ecrireConsole("Initialisation de la carte...");
-        AreaMap map = new AreaMap(mapLarg, mapHaut);
+        AreaMap map = new AreaMap();
 
         log.ecrireConsole("Initialisation de l'heuristique...");
         AStarHeuristic heuristic = new ClosestHeuristic();
@@ -242,7 +239,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             chrono.demarrer();
 
             if (rapide.isSelected()) {
-                pathFinder.calcShortestPath(depaX, depaY, destX, destY);
+                pathFinder.calcShortestPath(depaID, destID);
                 chrono.arreter();
                 log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
 
@@ -267,7 +264,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 panelItineraire.revalidate();
                 panelItineraire.repaint();
             } else if (changement.isSelected()) {
-                pathFinder.calcCoolestPath(depaX, depaY, destX, destY);
+                pathFinder.calcCoolestPath(depaID, destID);
                 chrono.arreter();
                 log.ecrireConsole("Durée de calcul: " + chrono.getDureeMilliSec() + "ms");
 

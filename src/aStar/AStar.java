@@ -37,16 +37,18 @@ public class AStar {
      * @param goalY
      * @return the shortest path to the goal
      */
-    public Path calcShortestPath(int startX, int startY, int goalX, int goalY) {
+    public Path calcShortestPath(int startID, int goalID) {
 
         //mark start and goal node
-        map.setStartLocation(startX, startY);
-        map.setGoalLocation(goalX, goalY);
-
+        map.setStartLocation(startID);
+        map.setGoalLocation(goalID);
+        
         map.getStartNode().setDistanceFromStart(0);
         closedList.clear();
         openList.clear();
         openList.add(map.getStartNode());
+        
+        System.out.println("Le point de d�part est : " + map.getStartNode().nomStat);
 
         //while we haven't reached the goal yet
         while (openList.size() != 0) {
@@ -66,6 +68,11 @@ public class AStar {
             //go through all the current Nodes neighbors and calculate if one should be our next step
             for (Station neighbor : current.getNeighborList()) {
                 boolean neighborIsBetter;
+                
+                System.out.println("La station " + current.nomStat + " a " + current.getNeighborList().size() + " voisins.");
+                for (Station test : current.getNeighborList()) {
+                	System.out.println(test.nomStat);
+                }
 
                 //if we have already searched this Node, don't bother and continue to the next one
                 if (closedList.contains(neighbor))
@@ -105,11 +112,11 @@ public class AStar {
      * @param goalY
      * @return the path witj the least of changes
      */
-    public Path calcCoolestPath(int startX, int startY, int goalX, int goalY) {
+    public Path calcCoolestPath(int startID, int goalID) {
 
         // Station de début et de fin
-        map.setStartLocation(startX, startY);
-        map.setGoalLocation(goalX, goalY);
+        map.setStartLocation(startID);
+        map.setGoalLocation(goalID);
 
         // On initialise le point de départ qui sera le ZERO
         map.getStartNode().setDistanceFromStart(0);
@@ -120,13 +127,6 @@ public class AStar {
 
         // On crée la liste des point é ouvrir
         rechercheList.add(map.getStartNode());
-
-        // Tant qu'il n'est pas arrivé jusqu'au point d'arrivée
-
-
-        // -------------------------------
-        //    JUSQU'ICI, NE RIEN TOUCHER (un seul passage!)
-        // -------------------------------
 
         while (rechercheList.size() != 0) {
 

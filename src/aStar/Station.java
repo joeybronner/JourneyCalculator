@@ -8,6 +8,7 @@ public class Station implements Comparable<Station> {
     boolean visited;
     int distanceFromStart;
     int heuristicDistanceFromGoal;
+    int id;
     Station previousNode;
     int x;
     int y;
@@ -25,7 +26,8 @@ public class Station implements Comparable<Station> {
      * @param y
      * @param nom_stat
      */
-    Station(int x, int y, String nom_stat) {
+    Station(int id, int x, int y, String nom_stat, String nom_line) {
+    	this.id = id;
         neighborList = new ArrayList<Station>();
         this.x = x;
         this.y = y;
@@ -34,6 +36,7 @@ public class Station implements Comparable<Station> {
         this.isStart = false;
         this.isDestination = false;
         this.nomStat = nom_stat;
+        this.nomLign = nom_line;
     }
 
 
