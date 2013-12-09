@@ -10,10 +10,14 @@ import aStar.utils.Console;
 import aStar.utils.Scrapper;
 
 import javax.swing.*;
+
+import connect.DatabaseConnect;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -35,8 +39,8 @@ public class fenetreAccueil extends JFrame implements ActionListener {
      * @param goalY         Point de destination
      */
 
-    private static int depaID = 2448;
-    private static int destID = 1985;
+    private static int depaID = 0;
+    private static int destID = 0;
     private static JMenuBar barreMenu;
     private static JMenu bdd, maj, infos;
     private static JMenuItem coord, lines, stops, develop, type, voisins;
@@ -239,6 +243,17 @@ public class fenetreAccueil extends JFrame implements ActionListener {
             chrono.demarrer();
 
             if (rapide.isSelected()) {
+            	
+            	// Récupération de la station de départ
+            	String depart = comboBoxDepart.getSelectedItem().toString();
+            	String strDep[]=depart.split("-");
+            	depaID = Integer.parseInt(strDep[0].trim());
+            	
+            	// Récupération de la station de destination
+            	String destination = comboBoxArrivee.getSelectedItem().toString();
+            	String strArr[]=destination.split("-");
+            	destID = Integer.parseInt(strArr[0].trim());
+            	
                 pathFinder.calcShortestPath(depaID, destID);
                 chrono.arreter();
                 log.ecrireConsole("DurÃ©e de calcul: " + chrono.getDureeMilliSec() + "ms");
@@ -264,6 +279,17 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 panelItineraire.revalidate();
                 panelItineraire.repaint();
             } else if (changement.isSelected()) {
+            	
+            	// Récupération de la station de départ
+            	String depart = comboBoxDepart.getSelectedItem().toString();
+            	String strDep[]=depart.split("-");
+            	depaID = Integer.parseInt(strDep[0].trim());
+            	
+            	// Récupération de la station de destination
+            	String destination = comboBoxArrivee.getSelectedItem().toString();
+            	String strArr[]=destination.split("-");
+            	destID = Integer.parseInt(strArr[0].trim());
+            	
                 pathFinder.calcCoolestPath(depaID, destID);
                 chrono.arreter();
                 log.ecrireConsole("DurÃ©e de calcul: " + chrono.getDureeMilliSec() + "ms");
@@ -302,9 +328,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 System.out.println("Requete de chargement de tous les arrets confondus");
                 try {
 
-                    s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) ORDER BY stop_name");
+                    s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id");
 
-                    Collection<Scrapper.Station> a = s.getStations().values();
+                    Collection<Scrapper.Arret> a = s.getArrs().values();
                     Iterator it = a.iterator();
                     while (it.hasNext()) {
                         Object ar = it.next();
@@ -325,9 +351,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 if (tram.isSelected()) {
                     System.out.println("Requete de chargement de tous les arrÃªts de TRAM");
                     try {
-                        s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='tram' ORDER BY stop_name");
+                        s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='tram'");
 
-                        Collection<Scrapper.Station> a = s.getStations().values();
+                        Collection<Scrapper.Arret> a = s.getArrs().values();
                         Iterator it = a.iterator();
                         while (it.hasNext()) {
                             Object ar = it.next();
@@ -348,9 +374,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                     System.out.println("Requete de chargement de tous les arrÃªts de METRO");
 
                     try {
-                        s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='metro' ORDER BY stop_name");
+                        s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='metro'");
 
-                        Collection<Scrapper.Station> a = s.getStations().values();
+                        Collection<Scrapper.Arret> a = s.getArrs().values();
                         Iterator it = a.iterator();
                         while (it.hasNext()) {
                             Object ar = it.next();
@@ -370,9 +396,9 @@ public class fenetreAccueil extends JFrame implements ActionListener {
                 if (rer.isSelected()) {
                     System.out.println("Requete de chargement de tous les arrÃªts de RER");
                     try {
-                        s.readStations("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) AND stop_type='rer' ORDER BY stop_name");
+                        s.readStops("select stop_id, stop_name, stop_type from tb_stops, tb_stopstype where tb_stops.parent_station = tb_stopstype.parent_id and stop_type='rer'");
 
-                        Collection<Scrapper.Station> a = s.getStations().values();
+                        Collection<Scrapper.Arret> a = s.getArrs().values();
                         Iterator it = a.iterator();
                         while (it.hasNext()) {
                             Object ar = it.next();
@@ -490,6 +516,7 @@ public class fenetreAccueil extends JFrame implements ActionListener {
     private static class ColorCellRender extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                       
             Random rand = new Random();
             if (couleurs.get(value.toString()) == null) {
                 float r = rand.nextFloat();

@@ -12,12 +12,12 @@ public class Station implements Comparable<Station> {
     Station previousNode;
     int x;
     int y;
-    //        boolean isObstacle;
     boolean isStart;
     boolean isDestination;
     boolean hasChange;
     String nomStat;
     String nomLign;
+    String color;
 
     /**
      * Station constructor
@@ -26,7 +26,7 @@ public class Station implements Comparable<Station> {
      * @param y
      * @param nom_stat
      */
-    Station(int id, int x, int y, String nom_stat, String nom_line) {
+    Station(int id, int x, int y, String nom_stat, String nom_line, String colorLine) {
     	this.id = id;
         neighborList = new ArrayList<Station>();
         this.x = x;
@@ -37,6 +37,7 @@ public class Station implements Comparable<Station> {
         this.isDestination = false;
         this.nomStat = nom_stat;
         this.nomLign = nom_line;
+        this.color = colorLine;
     }
 
 

@@ -196,7 +196,7 @@ public class Scrapper
     	while (test.next())
     	{              
             arr = new Arret(test.getString("stop_id"), test.getString("stop_name"), test.getString("stop_type"));
-            arrs.put(Integer.valueOf(test.getString("parent_id")), arr);
+            arrs.put(Integer.valueOf(test.getString("stop_id")), arr);
     	}
     	connexion.Deconnexion();
     }
@@ -271,7 +271,7 @@ public class Scrapper
 
         @Override
         public String toString() {
-            return "[" + type + "] " + nom;
+            return id + " - [" + type + "] " + nom;
         }
     }
 

@@ -37,14 +37,14 @@ public class AreaMap {
         maMap.clear();
 
         //ResultSet stations = connexion.Rechercher("SELECT DISTINCT(stop_name), ty.parent_id, stop_x, stop_y, stop_type FROM tb_stops st JOIN tb_stopscoordon co ON (st.parent_station = co.parent_id) JOIN tb_stopstype ty ON (co.parent_id = ty.parent_id) WHERE parent_station IN (select DISTINCT(parent_id) from tb_stopscoordon) ORDER BY stop_name");
-        ResultSet stations = connexion.Rechercher("SELECT st.stop_id, stop_name, stop_x, stop_y, parent_id, stop_line FROM tb_stopsneighbors ne, tb_stops st, tb_stopscoordon co WHERE ne.stop_id = st.stop_id AND st.parent_station = co.parent_id  GROUP BY st.stop_id ORDER BY st.stop_name");
+        ResultSet stations = connexion.Rechercher("SELECT st.stop_id, stop_name, stop_x, stop_y, parent_id, stop_line, color_line FROM tb_stopsneighbors ne, tb_stops st, tb_stopscoordon co, tb_lines li WHERE ne.stop_id = st.stop_id AND st.parent_station = co.parent_id AND st.stop_line = li.id_line GROUP BY st.stop_id ORDER BY st.stop_name");
         
         int count=0;
         try {
             HashMap<Integer, Station> hm;
             while (stations.next()) {
             	count++;
-                sta = new Station(Integer.parseInt(stations.getString("stop_id")), Integer.parseInt(stations.getString("stop_x")), Integer.parseInt(stations.getString("stop_y")), stations.getString("stop_name"), stations.getString("stop_line"));
+                sta = new Station(Integer.parseInt(stations.getString("stop_id")), Integer.parseInt(stations.getString("stop_x")), Integer.parseInt(stations.getString("stop_y")), stations.getString("stop_name"), stations.getString("stop_line"), stations.getString("color_line"));
                 maMapByIndex.put(Integer.parseInt(stations.getString("stop_id")), sta);
                 if (maMap.get(sta.getX()) == null) {
                     hm = new HashMap<Integer, Station>();
@@ -76,7 +76,7 @@ public class AreaMap {
             Station s;
             while (voisins.next()) {
                 if (voisins.getString("stop_x") != null && voisins.getString("stop_y") != null) {
-                    System.out.println(voisins.getString("stop_name"));
+                    //System.out.println(voisins.getString("stop_name"));
                     hm = maMap.get(Integer.parseInt(voisins.getString("stop_x")));
                     if (hm != null && hm.get(Integer.parseInt(voisins.getString("stop_y"))) != null) {
                         s = hm.get(Integer.parseInt(voisins.getString("stop_y")));
