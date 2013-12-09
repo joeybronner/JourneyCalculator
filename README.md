@@ -4,6 +4,7 @@
 
 ### Instructions
 Sylabus @(doc/projet_al_algo_java.pdf)
+Powerpoint @(doc/powerpoint.pdf)
 
 ### Notes
 
