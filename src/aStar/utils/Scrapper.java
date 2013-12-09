@@ -192,7 +192,6 @@ public class Scrapper
     	
     	ResultSet test = connexion.Rechercher(requete);
     	
-    	int i = 0;
     	while (test.next())
     	{              
             arr = new Arret(test.getString("stop_id"), test.getString("stop_name"), test.getString("stop_type"));
@@ -210,7 +209,6 @@ public class Scrapper
     	
     	ResultSet test = connexion.Rechercher(requete);
     	
-    	int i = 0;
     	while (test.next())
     	{              
     		sta = new Station(test.getString("parent_id"), test.getString("stop_type"), test.getString("stop_name"));
